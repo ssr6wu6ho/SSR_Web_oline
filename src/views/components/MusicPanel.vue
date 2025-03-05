@@ -112,18 +112,18 @@ const formatTime = (seconds: number) => {
 }
 
 // Simulate progress updates
-let progressInterval: number
+//let progressInterval: number
 onMounted(() => {
-  progressInterval = setInterval(() => {
-    if (isPlaying.value) {
-      currentTime.value = (currentTime.value + 1) % duration.value
-      progress.value = (currentTime.value / duration.value) * 100
-    }
-  }, 1000)
+  // progressInterval = setInterval(() => {
+  //   if (isPlaying.value) {
+  //     currentTime.value = (currentTime.value + 1) % duration.value
+  //     progress.value = (currentTime.value / duration.value) * 100
+  //   }
+  // }, 1000)
 })
 
 onUnmounted(() => {
-  clearInterval(progressInterval)
+  //
 })
 </script>
 

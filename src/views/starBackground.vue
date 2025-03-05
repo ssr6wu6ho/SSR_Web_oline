@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
 
 const props = defineProps<{
   isDark: boolean
@@ -16,7 +16,7 @@ const container = ref<HTMLDivElement>() // 容器DOM引用
 let scene: THREE.Scene                  // Three.js场景对象
 let camera: THREE.PerspectiveCamera     // 透视投影相机
 let renderer: THREE.WebGLRenderer       // WebGL渲染器
-let controls: OrbitControls             // 轨道控制器（已禁用交互）
+
 let stars: THREE.Points                 // 星空粒子系统
 let rainLines: THREE.Group              // 雨线组对象
 let cloudParticles: THREE.Points        // 乌云粒子系统
@@ -133,7 +133,6 @@ const animateStars = () => {
       Math.random() * 300 + 150,  // y ∈ [150, 450)
       Math.random() * 400 - 200   // z ∈ [-200, 200)
     )
-    line.velocity = 2 + Math.random() * 2  // 设置随机下落速度（2-4单位/帧）
     rainLines.add(line)
   }
   scene.add(rainLines)
@@ -157,7 +156,6 @@ const animateRain = () => {
 
   // 更新雨线位置
   rainLines.children.forEach(line => {
-    line.position.y -= line.velocity
     // 循环逻辑：雨滴到底部后重置到顶部
     if (line.position.y < -150) {
       line.position.y = 150 + Math.random() * 50
@@ -201,11 +199,7 @@ const initScene = () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
   container.value.appendChild(renderer.domElement)
 
-  // 创建控制器
-  controls = new OrbitControls(camera, renderer.domElement)
-  controls.enableZoom = false
-  controls.enablePan = false
-  controls.enableRotate = false
+
 
   // 根据主题创建效果
   if (props.isDark) {

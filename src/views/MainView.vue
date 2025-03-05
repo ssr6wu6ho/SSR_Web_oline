@@ -164,7 +164,7 @@ const initLenis = () => {
       infinite: false,
     });
     // 滚动事件处理
-    lenis.value.on("scroll", ({ scroll, velocity, direction, progress }) => {
+    lenis.value.on("scroll", ({ scroll }) => {
       updateCurrentIndex(scroll);
     });
     // RAF循环
@@ -224,6 +224,9 @@ currentPageStore.$subscribe((mutation, state) => {
     // 切换到其他页面时根据窗口宽度恢复状态
     //slideBarExtendStore.leftBarExtend = windowWidth.value >= 1024;
     scrollToPage(currentPageStore.currentIndex);
+  }
+  if(mutation){
+    console.log(mutation)
   }
 });
 

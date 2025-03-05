@@ -4,10 +4,6 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import { userDarkMOdel } from '../../store/stateStore';
-
-const darkModeStore = userDarkMOdel();
-
 
 import * as echarts from 'echarts';
 
@@ -137,7 +133,7 @@ const initChart = () => {
         }
       }
     },
-    series: data.slice(2).map((category, idx) => ({ // 从数据中取出后两个类别进行渲染
+    series: data.slice(2).map((category) => ({ // 从数据中取出后两个类别进行渲染
       name: category[0][3], // 系列名称
       type: 'scatter', // 系列类型为散点图
       data: category, // 系列数据

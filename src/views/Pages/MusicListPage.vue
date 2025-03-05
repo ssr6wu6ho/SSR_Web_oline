@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,onMounted, onUnmounted, watch } from 'vue'
+import { ref } from 'vue'
 import { Play } from 'lucide-vue-next'
 import { HeadphonesIcon, CatIcon } from 'lucide-vue-next'
 const albums = ref([

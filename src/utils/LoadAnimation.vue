@@ -11,7 +11,7 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { gsap } from 'gsap';
 
-const topText=["Shi","Shuangran","石","爽然","いし","そう","ぜん"];
+//const topText=["Shi","Shuangran","石","爽然","いし","そう","ぜん"];
 
 const buttomText = [
   "welcome", "欢迎", "ようこそ"

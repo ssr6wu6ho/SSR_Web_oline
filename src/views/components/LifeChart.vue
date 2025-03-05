@@ -85,12 +85,12 @@ const initChart = () => {
   if (!chartContainer.value) return;
 
   // 定义颜色方案
-  const colorMap = {
-    1: ['#FF6B6B', '#FF5252'],
-    2: ['#4ECDC4', '#45B7AF'],
-    3: ['#96CEB4', '#88C2A8'],
-    4: ['#FFEE93', '#FFE66D']
-  };
+  // const colorMap = {
+  //   1: ['#FF6B6B', '#FF5252'],
+  //   2: ['#4ECDC4', '#45B7AF'],
+  //   3: ['#96CEB4', '#88C2A8'],
+  //   4: ['#FFEE93', '#FFE66D']
+  // };
   const chartOptions = {
 
     title: {
@@ -142,8 +142,8 @@ const initChart = () => {
       },
       itemStyle: {
         color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [ // 设置散点颜色为渐变色
-          { offset: 0, color: colorMap[category[0][4]][0] }, // 渐变起始颜色
-          { offset: 1, color: colorMap[category[0][4]][1] } // 渐变结束颜色
+          // { offset: 0, color: colorMap[category[0][4]][0] }, // 渐变起始颜色
+          // { offset: 1, color: colorMap[category[0][4]][1] } // 渐变结束颜色
         ]),
         shadowBlur: 10, // 阴影模糊程度
         shadowColor: 'rgba(0, 0, 0, 0.3)', // 阴影颜色

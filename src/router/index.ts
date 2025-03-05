@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 export const routes = [
-  
   {
     path: "/messagePage",
     name: "messagePage",
@@ -18,7 +17,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   //确保每次路由切换时页面滚动到顶部
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 };
   },
 });

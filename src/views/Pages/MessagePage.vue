@@ -92,7 +92,7 @@ interface Message {
 const newMessage = ref('')          // 新留言内容
 const authorName = ref('')          // 用户昵称
 const authorAvatar = ref<File | null>(null) // 上传的头像文件
-const messages = ref<Message[]>([]) // 留言列表
+  const messages = ref<Message[]>([]);
 const isSubmitting = ref(false)     // 提交状态
 
 // 计算上传按钮显示文本
@@ -177,13 +177,12 @@ const submitMessage = async () => {
 // 加载留言列表
 const loadMessages = async () => {
   try {
-    messages.value = await getMessages()
+    messages.value = (await getMessages()) as Message[];
   } catch (error) {
-    console.error('加载留言失败:', error)
-    alert('无法加载留言列表')
+    console.error('加载留言失败:', error);
+    alert('无法加载留言列表');
   }
-}
-
+};
 // 时间格式化函数
 const formatTime = (timestamp: string) => {
   const date = new Date(timestamp)

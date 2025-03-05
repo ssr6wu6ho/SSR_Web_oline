@@ -2,7 +2,7 @@
 <!--使用状态：通过Pinia store获取状态栏的折叠状态，并根据状态调整布局。-->
 <template>
   <starBackground :is-dark="darkModeStore.isDark" class="fixed inset-0 z-5" />
-  <LoadAnimation ref="loadAnimation" />
+  <!-- <LoadAnimation ref="loadAnimation" /> -->
   <!--全局背景以及字体颜色-->
   <div class="min-h-screen font-mono transition-colors duration-300" :class="[
     darkModeStore.isDark
@@ -71,7 +71,7 @@ import Lenis from "lenis";
 import MusicPanel from "./components/MusicPanel.vue";
 import LeftPanel from "./components/LeftPanel.vue";
 import RightTopPanel from "./components/RightTopPanel.vue";
-import LoadAnimation from "../utils/LoadAnimation.vue";
+// import LoadAnimation from "../utils/LoadAnimation.vue";
 import starBackground from "./starBackground.vue";
 
 // import { getMessages, insertMessage } from "../request/message.js";
@@ -103,7 +103,7 @@ import { useRouter } from 'vue-router'
 const lenis = ref<Lenis>();
 const router = useRouter();
 
-const loadAnimation = ref();
+// const loadAnimation = ref();
 //页面元素
 const scrollContainer = ref<HTMLElement | null>(null);
 const pages = ref<HTMLElement[]>([]);
@@ -225,7 +225,7 @@ currentPageStore.$subscribe((mutation, state) => {
     //slideBarExtendStore.leftBarExtend = windowWidth.value >= 1024;
     scrollToPage(currentPageStore.currentIndex);
   }
-  if(mutation){
+  if (mutation) {
     console.log(mutation)
   }
 });

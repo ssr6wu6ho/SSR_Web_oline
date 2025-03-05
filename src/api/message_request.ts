@@ -29,14 +29,17 @@ export const insertMessage = async (message: {
   author_name: string;
   author_avatar: string;
 }) => {
-  const { data, error } = await supabase.from("messages").insert([
-    {
-      user_id: message.user_id,
-      content: message.content,
-      author_name: message.author_name,
-      author_avatar: message.author_avatar,
-    },
-  ]).select();
+  const { data, error } = await supabase
+    .from("messages")
+    .insert([
+      {
+        user_id: message.user_id,
+        content: message.content,
+        author_name: message.author_name,
+        author_avatar: message.author_avatar,
+      },
+    ])
+    .select();
 
   if (error) {
     console.error("Error inserting message:", error);

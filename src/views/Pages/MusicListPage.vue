@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8">
+  <div class="relative min-h-screen w-full overflow-hidden p-8">
     <!-- Playlist Grid -->
     <section class="mb-16">
       <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">

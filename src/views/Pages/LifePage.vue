@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-8">
+  <div class="relative min-h-screen w-full overflow-hidden p-8">
 
     <!-- Photo Grid -->
     <section class="mb-16">
@@ -8,7 +8,7 @@
       </h1>
       <LifeChart></LifeChart>
 
-      <div class="grid grid-cols-5 gap-6  ">
+      <div class="grid lg:grid-cols-5 gap-6">
         <div class="col-span-2 grid grid-rows-5 gap-6 p-6 mb-2">
           <div class="row-span-4 group relative bg-zinc-800/50 rounded-lg overflow-hidden ">
             <!-- 上半部分：两个并排的视频 -->

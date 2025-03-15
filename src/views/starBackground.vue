@@ -33,7 +33,7 @@ let animationFrameId: number            // 动画帧ID（用于取消动画）
 const createStars = () => {
   const geometry = new THREE.BufferGeometry()
   const vertices = []
-  
+
   // 生成随机三维坐标（立方体分布）
   for (let i = 0; i < 5000; i++) {
     vertices.push(
@@ -73,7 +73,7 @@ const animateStars = () => {
  * 1. 乌云粒子系统（使用大尺寸点模拟）
  * 2. 雨线组（使用线段模拟下落雨滴）
  */
- const createRainEffect = () => {
+const createRainEffect = () => {
   // 创建乌云粒子系统
   const cloudGeometry = new THREE.BufferGeometry()
   const cloudVertices = []
@@ -152,11 +152,13 @@ const animateRain = () => {
   for (let i = 0; i < cloudPositions.length; i += 3) {
     cloudPositions[i] += Math.sin(Date.now() * 0.001) * 0.02
   }
-  cloudParticles.geometry.attributes.position.needsUpdate = true // 标记需要更新
+  cloudParticles.geometry.attributes.position.needsUpdate = true
 
-  // 更新雨线位置
+  // 更新雨线位置（新增下落逻辑）
+  const fallSpeed = 2 // 雨滴下落速度
   rainLines.children.forEach(line => {
-    // 循环逻辑：雨滴到底部后重置到顶部
+    line.position.y -= fallSpeed // 新增：每帧向下移动
+
     if (line.position.y < -150) {
       line.position.y = 150 + Math.random() * 50
       line.position.x = Math.random() * 400 - 200

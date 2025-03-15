@@ -11,13 +11,13 @@
         <div class="bg-zinc-800/50 rounded-lg overflow-hidden">
           <div class="p-4">
             <!-- 留言内容输入框 -->
-            <textarea v-model="newMessage" rows="4" placeholder="请输入您的留言..."
+            <textarea v-model="newMessage" rows="4" placeholder="say something..."
               class="w-full resize-none rounded-lg border p-3 bg-zinc-900/50 border-zinc-700 focus:border-purple-500 placeholder:text-gray-500"></textarea>
 
             <div class="flex items-center justify-between mt-4">
               <div class="flex items-center gap-2">
                 <!-- 昵称输入框 -->
-                <input type="text" v-model="authorName" placeholder="昵称"
+                <input type="text" v-model="authorName" placeholder="Nickname"
                   class="rounded-lg border p-2 bg-zinc-900/50 border-zinc-700 placeholder:text-gray-500" />
 
                 <!-- 头像文件上传组件 -->
@@ -34,7 +34,7 @@
               <button @click="submitMessage"
                 class="px-4 py-2 rounded-lg bg-purple-500 hover:bg-purple-600 transition-colors"
                 :disabled="isSubmitting">
-                {{ isSubmitting ? "提交中..." : "提交留言" }}
+                {{ isSubmitting ? "..." : "submit" }}
               </button>
             </div>
           </div>
@@ -97,7 +97,7 @@ const isSubmitting = ref(false)     // 提交状态
 
 // 计算上传按钮显示文本
 const uploadButtonText = computed(() => {
-  return authorAvatar.value ? '🖼️ 已选择头像' : '📸 上传头像'
+  return authorAvatar.value ? '🖼️ OK' : '"📸 Upload avatar'
 })
 
 // 处理文件上传

@@ -10,25 +10,31 @@
       : 'bg-gradient-to-r from-gray-700 to-gray-500 text-zinc-800',
   ]">
     <!-- 右上角 -->
-    <div class="fixed top-6 right-6 z-50">
+    <div class="fixed top-6 right-6 z-10">
       <RightTopPanel />
     </div>
-
     <!-- 左侧浮动面板 -->
-    <div v-show="currentPageStore.currentIndex" class="fixed left-6 top-8 duration-300 z-50"
-      :class="[slideBarExtendStore.leftBarExtend ? 'w-[250px]' : 'w-[10px]']" :style="{
-        transform: `perspective(1500px) rotateY(${mouseX * 5}deg) rotateX(${-mouseY * 5
-          }deg) scale(1.02)`,
-      }">
+    <div v-show="currentPageStore.currentIndex" class="fixed duration-300 z-10" 
+    :class="[ windowWidth < 768
+        ? 'right-20 top-6 -translate-x-1/2'
+        : 'left-6 top-8'
+    ]" :style="windowWidth < 768 ? { transform: 'rotate(90deg)' } : {
+      transform: `perspective(1500px) rotateY(${mouseX * 5}deg) rotateX(${-mouseY * 5}deg) scale(1.02)`,
+    }">
       <LeftPanel />
     </div>
     <!-- 主要内容区域 -->
-    <div v-if="currentViewStore.isHomePage" class="duration-300"
+    <div v-if="currentViewStore.isHomePage" class="duration-300 z-50"
       :class="[slideBarExtendStore.leftBarExtend ? 'ml-[300px]' : 'ml-[50px]']">
       <!-- 包裹所有页面并启用滚动 -->
       <div ref="scrollContainer" class="overflow-y-auto h-screen ">
         <div class="w-full">
-          <div ref="homePage">
+          <div ref="homePage" :style="{
+            transform: `perspective(1000px) 
+            rotateY(${mouseX * 2}deg)
+            rotateX(${-mouseY * 2}deg)
+            scale(1.02)`,
+          }">
             <HomePage />
           </div>
           <div ref="techPage">
@@ -47,13 +53,12 @@
       <router-view></router-view>
     </div>
     <!-- 音乐播放器 -->
-    <div class="fixed bottom-6 right-6 duration-300 z-50"
-      :class="[slideBarExtendStore.musicBarExtend ? 'w-[300px]' : 'w-[200px]']" :style="{
-        transform: `perspective(1000px) 
+    <div v-show="currentPageStore.currentIndex" class="fixed bottom-6 right-6 duration-300 z-10" :style="{
+      transform: `perspective(1000px) 
             rotateY(${mouseX * 10}deg)
             rotateX(${-mouseY * 10}deg)
             scale(1.02)`,
-      }">
+    }">
       <MusicPanel />
     </div>
   </div>
@@ -74,31 +79,12 @@ import RightTopPanel from "./components/RightTopPanel.vue";
 // import LoadAnimation from "../utils/LoadAnimation.vue";
 import starBackground from "./starBackground.vue";
 
-// import { getMessages, insertMessage } from "../request/message.js";
-
-// // 使用 getMessages 函数
-// getMessages().then((messages) => {
-//   console.log("Fetched messages:", messages);
-// });
-
-// // 使用 insertMessage 函数
-// const newMessage = {
-//   user_id: "123e4567-e89b-12d3-a456-426614174003",
-//   content: "This is a new test message!",
-// };
-
-// insertMessage(newMessage).then((result) => {
-//   console.log("Inserted message result:", result);
-// });
-
-
-
 import TechPage from "./Pages/TechPage.vue";
 import LifePage from "./Pages/LifePage.vue";
 import MusicListPage from "./Pages/MusicListPage.vue";
 import HomePage from "./Pages/HomePage.vue";
-
 import { useRouter } from 'vue-router'
+
 
 const lenis = ref<Lenis>();
 const router = useRouter();
@@ -134,14 +120,6 @@ const getPages = () => {
 watch(() => router.currentRoute.value.path, (newPath) => {
   currentViewStore.checkRouts(newPath)
   console.log(router.currentRoute.value.path)
-  if (currentViewStore.isHomePage) {
-    // 回到首页逻辑
-    currentPageStore.setCurrentPage(0)
-    lenis.value?.scrollTo(0, { immediate: true })
-  } else {
-    // 执行全局跳转
-    router.push(newPath)
-  }
 })
 
 const updateWidth = () => {
@@ -157,11 +135,9 @@ const initLenis = () => {
   if (scrollContainer.value) {
     lenis.value = new Lenis({
       wrapper: scrollContainer.value, // 指定滚动容器
-      duration: 1, // 滚动动画时长
+      duration: 0.5, // 滚动动画时长
       orientation: "vertical", // 垂直滚动
       gestureOrientation: "vertical",
-      smoothWheel: true, // 启用平滑滚动
-      infinite: false,
     });
     // 滚动事件处理
     lenis.value.on("scroll", ({ scroll }) => {
@@ -180,7 +156,6 @@ const initLenis = () => {
 // 滚动到指定页面
 const scrollToPage = (index: number) => {
   if (!lenis.value || !pages.value[index]) return;
-
   lenis.value.scrollTo(pages.value[index], {
     immediate: false,
     lock: true, // 滚动期间锁定其他交互
@@ -240,13 +215,14 @@ onMounted(async () => {
   //setTimeout(() => loadAnimation.value?.hide(), 1000);
   getPages();
   initLenis();
-
-
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
   window.removeEventListener("mousemove", handleMouseMove);
+  if (lenis.value) {
+    lenis.value.destroy();
+  }
 });
 </script>
 
@@ -274,5 +250,13 @@ onUnmounted(() => {
   border-radius: 10px;
   border: 3px solid transparent;
   /* 移除边框以减少滑块的可见性 */
+}
+
+/* 移动端侧边栏适配 */
+@media (max-width: 767px) {
+  .mobile-sidebar {
+    transform-origin: top center;
+    white-space: nowrap;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8">
+  <div class="relative min-h-screen w-full overflow-hidden p-8">
     <h2 class="text-2xl font-bold mb-8 flex items-center gap-2 p-10">
       <component :is="CodeIcon" class="w-6 h-6" />
       PROJECTS
@@ -50,7 +50,7 @@
                   <div class="flex h-2 rounded-full overflow-hidden"
                     :class="[darkModeStore.isDark ? 'bg-zinc-700' : 'bg-gray-200']">
                     <div class="h-full rounded-full" :class="[frontend.color]" :style="{ width: `${frontend.level}%` }">
-                    ssssssssssss</div>
+                      ssssssssssss</div>
                   </div>
                 </div>
                 <div v-for="backend in skill.backend" class="flex items-center gap-2 p-2">
@@ -101,8 +101,8 @@
 
 <script setup lang="ts">
 // import {inject, onMounted, onUnmounted} from 'vue';
-import {  ref } from 'vue';
-import { CodeIcon} from 'lucide-vue-next';
+import { ref } from 'vue';
+import { CodeIcon } from 'lucide-vue-next';
 import { userDarkMOdel } from '../../store/stateStore.ts'
 import svg_android from '../../icons/android.svg';
 import svg_arduino from '../../icons/arduino.svg';

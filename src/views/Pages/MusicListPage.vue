@@ -10,13 +10,11 @@
       <!--横向滚动容器-->
       <div class="max-w-screen mx-auto p-4">
         <!--snap-mandatory: 设置滚动快照行为为强制模式，即滚动必须停靠在快照点上。-->
-        <div class="overflow-x-hidden  space-x-4 p-4">
-          <!--第一行-->
+        <div class="overflow-x-hidden space-x-4 p-4">
           <div class="flex flex-nowrap gap-4 w-max scroll-animation">
-            <div v-for="album in firstRowAlbums" key="album.id">
-              <!--aspect-square:
-              设置元素的宽高比为 1:1（即正方形）。-->
-              <div class="group relative aspect-square bg-gray-800 rounded-lg overflow-hidden p-1 w-[400px]">
+            <div v-for="album in firstRowAlbums" :key="album.id">
+              <div
+                class="group relative aspect-square bg-gray-800 rounded-lg overflow-hidden p-1 w-[400px] sm:w-[200px]">
                 <img :src="album.cover" alt="album.name" class="w-full h-full object-cover">
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-zinc-900/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -191,11 +189,13 @@ const tracks = ref([
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
     /* 移动一半宽度（克隆后总宽度为两倍） */
   }
 }
+
 /* 应用动画的类 */
 .scroll-animation {
   animation: scroll 20s linear infinite;
@@ -203,25 +203,30 @@ const tracks = ref([
   will-change: transform;
   /* 优化性能 */
 }
+
 /* 新增反向滚动动画 */
 @keyframes reverse-scroll {
   0% {
     transform: translateX(-50%);
   }
+
   100% {
     transform: translateX(0);
     /* 移动正方向，实现反向滚动 */
   }
 }
+
 /* 应用反向动画的类 */
 .reverse-scroll-animation {
   animation: reverse-scroll 20s linear infinite;
   will-change: transform;
 }
+
 /* 悬停暂停动画 */
 .scroll-animation:hover {
   animation-play-state: paused;
 }
+
 /* 悬停暂停动画 */
 .reverse-scroll-animation:hover {
   animation-play-state: paused;

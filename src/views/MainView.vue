@@ -2,6 +2,10 @@
 <!--使用状态：通过Pinia store获取状态栏的折叠状态，并根据状态调整布局。-->
 <template>
   <starBackground :is-dark="darkModeStore.isDark" class="fixed inset-0 z-5" />
+  <!-- 鼠标跟随效果 -->
+  <div class="pointer-events-none fixed inset-0  transition-opacity duration-300" :style="{
+    background: `radial-gradient(600px at ${mouseX}px ${mouseY}px, rgba(100, 100, 255, 0.03), transparent 80%)`
+  }"></div>
   <!-- <LoadAnimation ref="loadAnimation" /> -->
   <!--全局背景以及字体颜色-->
   <div class="min-h-screen font-mono transition-colors duration-300" :class="[
@@ -10,14 +14,13 @@
       : 'bg-gradient-to-r from-gray-700 to-gray-500 text-zinc-800',
   ]">
     <!-- 右上角 -->
-    <div class="fixed top-6 right-6 z-10">
+    <div :class="[windowWidth < 768 ? 'fixed top-12 right-6 z-10' : 'fixed top-6 right-6 z-10']">
       <RightTopPanel />
     </div>
     <!-- 左侧浮动面板 -->
-    <div v-show="currentPageStore.currentIndex" class="fixed duration-300 z-10" 
-    :class="[ windowWidth < 768
-        ? 'right-20 top-6 -translate-x-1/2'
-        : 'left-6 top-8'
+    <div v-show="currentPageStore.currentIndex" class="fixed duration-300 z-10" :class="[windowWidth < 768
+      ? 'right-6 top-4 -translate-x-1/2'
+      : 'left-6 top-8'
     ]" :style="windowWidth < 768 ? { transform: 'rotate(90deg)' } : {
       transform: `perspective(1500px) rotateY(${mouseX * 5}deg) rotateX(${-mouseY * 5}deg) scale(1.02)`,
     }">

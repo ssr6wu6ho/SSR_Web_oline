@@ -1,11 +1,5 @@
 <template>
   <div class="relative min-h-screen w-full overflow-hidden">
-
-    <!-- 鼠标跟随效果 -->
-    <div class="pointer-events-none fixed inset-0  transition-opacity duration-300" :style="{
-      background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(100, 100, 255, 0.03), transparent 80%)`
-    }" />
-
     <!-- 主要内容 -->
     <main class="relative flex min-h-screen items-center px-8 lg:px-16">
       <div class="w-full max-w-5xl animate-float">
@@ -14,19 +8,16 @@
           <h2 class="text-xl font-medium tracking-wide text-gray-400">
             {{ displayText }}
           </h2>
-
           <h1 class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-gray-100">
             Shi ShuangRan
             <span class="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
               🛹👻🛹
             </span>
           </h1>
-
           <p class="max-w-[600px] text-lg text-gray-400">
             大三本科在读 / 欢迎
           </p>
         </div>
-
         <!-- 技能标签 -->
         <div class="mt-12 flex flex-wrap gap-3">
           <div v-for="skill in skills" :key="skill"
@@ -36,7 +27,6 @@
             </span>
           </div>
         </div>
-
         <!-- 按钮组 -->
         <div class="mt-12 flex gap-4">
         </div>
@@ -46,13 +36,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // 响应式状态
-const mousePosition = ref({ x: 0, y: 0 })
 const displayText = ref('')
-const targetText = 'WELCOME TO MY SPACE'
+const topText = ["<WELCOME TO MY SPACE />", "<STUDENT />", "<SSR />"]
 let currentIndex = 0
+let textCurrentIndex = 0;
 
 // 技能列表
 const skills = [
@@ -62,32 +52,45 @@ const skills = [
   'Creative Coding',
 ]
 
-// 方法
-const openLink = (url) => {
-  window.open(url, '_blank')
-}
-
-const typeText = () => {
-  if (currentIndex < targetText.length) {
-    displayText.value += targetText[currentIndex]
-    currentIndex++
-    setTimeout(typeText, 100)
+const typeTopText = () => {
+  if (currentIndex < topText.length) {
+    const currentString = topText[currentIndex];
+    if (textCurrentIndex < currentString.length) {
+      // 显示字符串
+      displayText.value += currentString[textCurrentIndex];
+      textCurrentIndex++;
+      setTimeout(typeTopText, 100);
+    } else {
+      // 字符串显示完毕，等待一秒
+      setTimeout(() => {
+        // 回退字符串
+        if (textCurrentIndex > 0) {
+          displayText.value = displayText.value.slice(0, -1);
+          textCurrentIndex--;
+          setTimeout(typeTopText, 100);
+        } else {
+          // 字符串回退完毕，等待一秒
+          setTimeout(() => {
+            // 重置索引并切换到下一个字符串
+            textCurrentIndex = 0;
+            currentIndex = (currentIndex + 1) % topText.length; // 循环到下一个字符串
+            setTimeout(typeTopText, 100);
+          }, 1000);
+        }
+      }, 1000);
+    }
   }
 }
-
 const handleMouseMove = (e) => {
   mousePosition.value = { x: e.clientX, y: e.clientY }
 }
 
 // 生命周期钩子
 onMounted(() => {
-  window.addEventListener('mousemove', handleMouseMove)
-  typeText()
+  typeTopText()
 })
 
-onUnmounted(() => {
-  window.removeEventListener('mousemove', handleMouseMove)
-})
+
 </script>
 
 <style scoped></style>

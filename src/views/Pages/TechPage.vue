@@ -5,7 +5,7 @@
       PROJECTS
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 justify-content">
-      <section class="mb-16 col-span-3  grid grid-cols-2 gap-10">
+      <section class="mb-16 col-span-3  grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div v-for="project in projects" :key="project.id"
           class="group relative rounded-lg overflow-hidden transition-colors p-4 hover:bg-slate-200/30"
           :class="[darkModeStore.isDark ? 'bg-zinc-800/50' : 'bg-slate-500/30 shadow-lg']">

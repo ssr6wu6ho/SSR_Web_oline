@@ -30,7 +30,6 @@ export const userSlideBarExtend = defineStore("slideBarExtend", {
   state: () => ({
     musicBarExtend: false,
     leftBarExtend: false,
-    rightTopBarExtend: false,
   }),
   actions: {
     toggleMusicBarExtend() {
@@ -38,9 +37,6 @@ export const userSlideBarExtend = defineStore("slideBarExtend", {
     },
     toggleLeftBarExtend() {
       this.leftBarExtend = !this.leftBarExtend;
-    },
-    toggleRightTopBarExtend() {
-      this.rightTopBarExtend = !this.rightTopBarExtend;
     },
   },
 });

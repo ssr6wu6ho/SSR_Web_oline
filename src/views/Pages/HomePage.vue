@@ -43,6 +43,7 @@ const displayText = ref('')
 const topText = ["<WELCOME TO MY SPACE />", "<STUDENT />", "<SSR />"]
 let currentIndex = 0
 let textCurrentIndex = 0;
+let isAddText = true;
 
 // 技能列表
 const skills = [
@@ -54,30 +55,30 @@ const skills = [
 
 const typeTopText = () => {
   if (currentIndex < topText.length) {
-    const currentString = topText[currentIndex];
-    if (textCurrentIndex < currentString.length) {
-      // 显示字符串
-      displayText.value += currentString[textCurrentIndex];
-      textCurrentIndex++;
-      setTimeout(typeTopText, 100);
-    } else {
-      // 字符串显示完毕，等待一秒
-      setTimeout(() => {
-        // 回退字符串
-        if (textCurrentIndex > 0) {
-          displayText.value = displayText.value.slice(0, -1);
-          textCurrentIndex--;
-          setTimeout(typeTopText, 100);
-        } else {
-          // 字符串回退完毕，等待一秒
-          setTimeout(() => {
-            // 重置索引并切换到下一个字符串
-            textCurrentIndex = 0;
-            currentIndex = (currentIndex + 1) % topText.length; // 循环到下一个字符串
-            setTimeout(typeTopText, 100);
-          }, 1000);
+    if (isAddText) {
+      const currentString = topText[currentIndex];
+      if (textCurrentIndex < currentString.length) {
+        // 显示字符串
+        displayText.value += currentString[textCurrentIndex];
+        textCurrentIndex++;
+        setTimeout(typeTopText, 100);
+        if (textCurrentIndex === currentString.length) {
+          setTimeout(() => { }, 1000);
+          isAddText = false;
         }
-      }, 1000);
+      }
+    }
+    if (!isAddText) {
+      if (textCurrentIndex > 0) {
+        displayText.value = displayText.value.slice(0, -1);
+        textCurrentIndex--;
+        setTimeout(typeTopText, 100);
+      }
+    }
+    if (textCurrentIndex === 0) {
+      setTimeout(() => { }, 1000);
+      currentIndex++;
+      isAddText = true;
     }
   }
 }

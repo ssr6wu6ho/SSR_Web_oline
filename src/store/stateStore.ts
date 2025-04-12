@@ -1,8 +1,9 @@
-//stateStore¸ºÔğ¹ÜÀíÓ¦ÓÃ×´Ì¬,²»Éæ¼°¾ßÌåµÄUIÂß¼­¡£
+//stateStoreè´Ÿè´£ç®¡ç†åº”ç”¨çŠ¶æ€,ä¸æ¶‰åŠå…·ä½“çš„UIé€»è¾‘ã€‚
 import { defineStore } from "pinia";
-//Pinia ¿âÀ´¶¨ÒåÒ»¸ö Vuex ´æ´¢Ä£¿é£¨store£©
+import { ref } from "vue";
+//Pinia åº“æ¥å®šä¹‰ä¸€ä¸ª Vuex å­˜å‚¨æ¨¡å—ï¼ˆstoreï¼‰
 
-//ÓÃ defineStore º¯ÊıÀ´¶¨ÒåÒ»¸öĞÂµÄ´æ´¢Ä£¿é¡£'darkMode' ÊÇÕâ¸ö´æ´¢Ä£¿éµÄÎ¨Ò»±êÊ¶·û¡£
+//ç”¨ defineStore å‡½æ•°æ¥å®šä¹‰ä¸€ä¸ªæ–°çš„å­˜å‚¨æ¨¡å—ã€‚'darkMode' æ˜¯è¿™ä¸ªå­˜å‚¨æ¨¡å—çš„å”¯ä¸€æ ‡è¯†ç¬¦ã€‚
 export const userDarkMOdel = defineStore("darkMode", {
   state: () => ({
     isDark: true,
@@ -13,7 +14,7 @@ export const userDarkMOdel = defineStore("darkMode", {
     },
   },
 });
-//´¢´æ¹ö¶¯Ëø¶¨·ÀÖ¹³åÍ»
+//å‚¨å­˜æ»šåŠ¨é”å®šé˜²æ­¢å†²çª
 export const userScrollLock = defineStore("scrollLock", {
   state: () => ({
     isScrolling: false,
@@ -22,10 +23,10 @@ export const userScrollLock = defineStore("scrollLock", {
     setScrolling(state: boolean) {
       this.isScrolling = state;
     },
-    scrollToPage() {},
+    scrollToPage() { },
   },
 });
-//´æ´¢ÕÛµşµÄ²à±ßÀ¸×´Ì¬
+//å­˜å‚¨æŠ˜å çš„ä¾§è¾¹æ çŠ¶æ€
 export const userSlideBarExtend = defineStore("slideBarExtend", {
   state: () => ({
     musicBarExtend: false,
@@ -40,7 +41,7 @@ export const userSlideBarExtend = defineStore("slideBarExtend", {
     },
   },
 });
-//´æ´¢µ±Ç°Ò³Ãæ
+//å­˜å‚¨å½“å‰é¡µé¢
 export const userCurrentPage = defineStore("currentPage", {
   state: () => ({
     currentIndex: 0,
@@ -51,11 +52,11 @@ export const userCurrentPage = defineStore("currentPage", {
     },
   },
 });
-//´æ´¢ÊÇ·ñÎªµÚÒ»Ò³Ãæ£¬Ôö¼ÓÂ·ÓÉ¼àÌı¹¦ÄÜ
+//å­˜å‚¨æ˜¯å¦ä¸ºç¬¬ä¸€é¡µé¢ï¼Œå¢åŠ è·¯ç”±ç›‘å¬åŠŸèƒ½
 export const userCurrentView = defineStore("currentView", {
   state: () => ({
     isHomePage: true,
-    specialRoutes: ["/blogPage", "/messagePage"], //ĞèÒªÈ«¾ÖÌø×ªµÄÌØÊâÂ·ÓÉ
+    specialRoutes: ["/blogPage", "/messagePage"], //éœ€è¦å…¨å±€è·³è½¬çš„ç‰¹æ®Šè·¯ç”±
   }),
   actions: {
     checkRouts(path: string) {
@@ -63,3 +64,73 @@ export const userCurrentView = defineStore("currentView", {
     },
   },
 });
+
+interface MusicTrack {
+  id: number;
+  title?: string;
+  artist?: string;
+  cover?: string;
+  duration?: string;
+  url?: string;
+}
+
+export const userMusicState = defineStore("musicState", {
+  state: () => ({
+    isPlaying: false,
+    currentTrackIndex: 0,    // å½“å‰æ’­æ”¾ç´¢å¼•
+    currentTime: 0,         // å½“å‰æ’­æ”¾æ—¶é—´
+    currentMusic: {
+      id: 1,
+      title: '',
+      artist: '',
+      cover: '',
+      duration: '',
+      url: ''
+    },
+    audioElement: null as HTMLAudioElement | null // éŸ³é¢‘å…ƒç´ 
+  }),
+
+  actions: {
+    // åˆå§‹åŒ–éŸ³é¢‘
+    initAudio(url: string) {
+
+      this.audioElement = new Audio(url)
+
+      if (this.audioElement) {
+        this.audioElement.play().catch((error) => {
+          console.error('éŸ³é¢‘æ’­æ”¾å¤±è´¥:', error);
+        });
+      }
+    },
+
+    setCurrentMusic(track: MusicTrack) {
+      this.currentMusic.id = track.id;
+      this.currentMusic.title = track.title || '';
+      this.currentMusic.artist = track.artist || '';
+      this.currentMusic.cover = track.cover || '';
+      this.currentMusic.duration = track.duration || '';
+      this.currentMusic.url = track.url || '';
+      console.log('setCurrentMusic', this.currentMusic);
+
+      if (this.currentMusic.url) {
+        this.initAudio(this.currentMusic.url);
+      }
+    },
+
+    // æ’­æ”¾/æš‚åœ
+    togglePlay() {
+      if (!this.audioElement) return
+      this.isPlaying = !this.isPlaying
+      this.isPlaying ? this.audioElement.play() : this.audioElement.pause()
+    },
+
+    cleanup() {
+      if (this.audioElement) {
+        this.audioElement.pause()
+        this.audioElement.removeAttribute('src')
+        this.audioElement = null
+      }
+    }
+  }
+
+})

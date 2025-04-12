@@ -86,7 +86,6 @@
 import { ref } from 'vue'
 
 //暗色模式处理
-
 import { userDarkMOdel, userCurrentPage, userSlideBarExtend } from '../../store/stateStore'
 import { Carousel, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
@@ -106,8 +105,8 @@ import {
     MessageSquareDiff, Cpu
 } from 'lucide-vue-next'
 
-const toggleSidebar = () => {
-    slideBarExtendStore.leftBarExtend = !slideBarExtendStore.leftBarExtend
+function toggleSidebar() {
+    slideBarExtendStore.toggleLeftBarExtend();
 }
 
 // 路由配置

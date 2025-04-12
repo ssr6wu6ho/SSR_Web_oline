@@ -13,8 +13,7 @@
         <div class="overflow-x-hidden space-x-4 p-4">
           <div class="flex flex-nowrap gap-4 w-max scroll-animation">
             <div v-for="album in firstRowAlbums" :key="album.id">
-              <div
-                class="group relative aspect-square bg-gray-800 rounded-lg overflow-hidden p-1 w-[400px] sm:w-[200px]">
+              <div class="group relative aspect-square bg-gray-800 rounded-lg overflow-hidden p-1 w-[400px]">
                 <img :src="album.cover" alt="album.name" class="w-full h-full object-cover">
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-zinc-900/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -59,8 +58,7 @@
       </div>
     </section>
 
-
-    <!-- Current Playlist -->
+    <!-- Playlist -->
     <section>
       <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">
         <component :is="CatIcon" class="w-6 h-6" />
@@ -68,7 +66,8 @@
       </h2>
       <div class="rounded-lg overflow-hidden">
         <div v-for="track in tracks" :key="track.id"
-          class="flex items-center justify-between p-4 hover:bg-zinc-700/50 transition-colors">
+          class="flex items-center justify-between p-4 hover:bg-zinc-700/50 transition-colors"
+          @click="playMusic(track)">
           <div class="flex items-center gap-4">
             <img :src="track.cover" :alt="track.title" class="w-12 h-12 rounded object-cover" />
             <div>
@@ -86,14 +85,18 @@
       </div>
     </section>
 
-
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Play } from 'lucide-vue-next'
+import { userMusicState } from '../../store/stateStore'
 import { HeadphonesIcon, CatIcon } from 'lucide-vue-next'
+
+const musicStore = userMusicState()
+
+
 const albums = ref([
   {
     id: 1,
@@ -156,30 +159,36 @@ const albums = ref([
 const firstRowAlbums = [...albums.value.slice(0, 4), ...albums.value.slice(0, 4)];
 const secondRowAlbums = [...albums.value.slice(4, 9), ...albums.value.slice(4, 9)];
 
-const tracks = ref([
+const tracks = [
   {
     id: 1,
     title: 'Midnight Dreams',
     artist: 'Luna Wave',
-    cover: '/placeholder.svg?height=48&width=48',
-    duration: '3:45'
+    cover: '/src/components/png_music/ILoveyouSoFuckingMuch.jpg',
+    duration: '3:45',
+    url: '/src/components/music_1.m4a'
   },
   {
     id: 2,
     title: 'Summer Breeze',
     artist: 'Solar Beats',
-    cover: '/placeholder.svg?height=48&width=48',
-    duration: '4:20'
+    cover: '/src/components/png_music/cyinc.jpg',
+    duration: '4:20',
+    url: '/src/components/music_2.m4a'
   },
-  {
-    id: 3,
-    title: 'Urban Echo',
-    artist: 'City Sound',
-    cover: '/placeholder.svg?height=48&width=48',
-    duration: '3:15'
-  }
-])
-
+]
+interface MusicTrack {
+  id: number;
+  title: string;
+  artist: string;
+  cover: string;
+  duration: string;
+  url: string;
+}
+const playMusic = (currentTrack: MusicTrack) => {
+  // 假设专辑接口返回 tracks
+  musicStore.setCurrentMusic(currentTrack);
+}
 
 </script>
 

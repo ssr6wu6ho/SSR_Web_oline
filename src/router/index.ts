@@ -4,7 +4,7 @@ export const routes = [
   {
     path: "/messagePage",
     name: "messagePage",
-    component: () => import("../views/Pages/MessagePage.vue"),
+    component: () => import("../views/Pages/MessagePage.vue"),//¥¶¿Ìhandle
   },
   {
     path: "/blogPage",

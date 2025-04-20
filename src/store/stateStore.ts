@@ -1,6 +1,5 @@
 //stateStore负责管理应用状态,不涉及具体的UI逻辑。
 import { defineStore } from "pinia";
-import { ref } from "vue";
 //Pinia 库来定义一个 Vuex 存储模块（store）
 
 //用 defineStore 函数来定义一个新的存储模块。'darkMode' 是这个存储模块的唯一标识符。
@@ -14,18 +13,7 @@ export const userDarkMOdel = defineStore("darkMode", {
     },
   },
 });
-//储存滚动锁定防止冲突
-export const userScrollLock = defineStore("scrollLock", {
-  state: () => ({
-    isScrolling: false,
-  }),
-  actions: {
-    setScrolling(state: boolean) {
-      this.isScrolling = state;
-    },
-    scrollToPage() { },
-  },
-});
+
 //存储折叠的侧边栏状态
 export const userSlideBarExtend = defineStore("slideBarExtend", {
   state: () => ({

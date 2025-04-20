@@ -11,80 +11,61 @@ const props = defineProps<{
   isDark: boolean
 }>()
 
-// Three.jsÏà¹ØÒıÓÃ
-const container = ref<HTMLDivElement>() // ÈİÆ÷DOMÒıÓÃ
-let scene: THREE.Scene                  // Three.js³¡¾°¶ÔÏó
-let camera: THREE.PerspectiveCamera     // Í¸ÊÓÍ¶Ó°Ïà»ú
-let renderer: THREE.WebGLRenderer       // WebGLäÖÈ¾Æ÷
+const container = ref<HTMLDivElement>() 
+let scene: THREE.Scene                 
+let camera: THREE.PerspectiveCamera     // Í¸ï¿½ï¿½Í¶Ó°ï¿½ï¿½ï¿½
+let renderer: THREE.WebGLRenderer       // WebGLï¿½ï¿½È¾ï¿½ï¿½
 
-let stars: THREE.Points                 // ĞÇ¿ÕÁ£×ÓÏµÍ³
-let rainLines: THREE.Group              // ÓêÏß×é¶ÔÏó
-let cloudParticles: THREE.Points        // ÎÚÔÆÁ£×ÓÏµÍ³
-let animationFrameId: number            // ¶¯»­Ö¡ID£¨ÓÃÓÚÈ¡Ïû¶¯»­£©
+let stars: THREE.Points                 // ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³
+let rainLines: THREE.Group              // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+let cloudParticles: THREE.Points        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³
+let animationFrameId: number            // ï¿½ï¿½ï¿½ï¿½Ö¡IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-/**
- * ´´½¨ĞÇ¿ÕÁ£×ÓÏµÍ³
- * ÊµÏÖÔ­Àí£º
- * 1. Ê¹ÓÃBufferGeometry¸ßĞ§´¦Àí´óÁ¿¶¥µãÊı¾İ
- * 2. Ëæ»úÉú³É5000¸öÁ£×ÓÎ»ÖÃ£¨·¶Î§-300µ½300£©
- * 3. Ê¹ÓÃPointsMaterial´´½¨µã²ÄÖÊ
- */
-// ´´½¨ĞÇ¿Õ
+
 const createStars = () => {
   const geometry = new THREE.BufferGeometry()
   const vertices = []
 
-  // Éú³ÉËæ»úÈıÎ¬×ø±ê£¨Á¢·½Ìå·Ö²¼£©
   for (let i = 0; i < 5000; i++) {
     vertices.push(
-      Math.random() * 600 - 300, // x ¡Ê [-300, 300)
-      Math.random() * 600 - 300, // y ¡Ê [-300, 300)
-      Math.random() * 600 - 300  // z ¡Ê [-300, 300)
+      Math.random() * 600 - 300, 
+      Math.random() * 600 - 300,
+      Math.random() * 600 - 300 
     )
   }
 
-  // ÉèÖÃ¼¸ºÎÌå¶¥µãÊôĞÔ£¨Ê¹ÓÃFloat32ArrayÓÅ»¯ÄÚ´æ£©
   geometry.setAttribute(
     'position',
-    new THREE.Float32BufferAttribute(vertices, 3) // 3±íÊ¾Ã¿¶¥µãÈı¸ö·ÖÁ¿£¨x,y,z£©
+    new THREE.Float32BufferAttribute(vertices, 3)
   )
 
-  // ´´½¨µã²ÄÖÊ£¨°×É«£¬´óĞ¡1px£¬ÔÊĞíÍ¸Ã÷£©
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ğ¡1pxï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½
   const material = new THREE.PointsMaterial({
-    color: 0xffffff,    // °×É«
-    size: 1,            // µã´óĞ¡
-    transparent: true   // ÆôÓÃÍ¸Ã÷
+    color: 0xffffff,    // ï¿½ï¿½É«
+    size: 1,            // ï¿½ï¿½ï¿½Ğ¡
+    transparent: true   // ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½
   })
 
-  // ´´½¨Á£×ÓÏµÍ³²¢¼ÓÈë³¡¾°
   stars = new THREE.Points(geometry, material)
   scene.add(stars)
 }
 
-// ¶¯»­ĞÇĞÇ
 const animateStars = () => {
   if (!stars) return
   stars.rotation.y += 0.0005
 }
 
-/**
- * ´´½¨ÓêÌìĞ§¹û£¨ÎÚÔÆ+ÓêÏß£©
- * ÊµÏÖ×é³É£º
- * 1. ÎÚÔÆÁ£×ÓÏµÍ³£¨Ê¹ÓÃ´ó³ß´çµãÄ£Äâ£©
- * 2. ÓêÏß×é£¨Ê¹ÓÃÏß¶ÎÄ£ÄâÏÂÂäÓêµÎ£©
- */
+
 const createRainEffect = () => {
-  // ´´½¨ÎÚÔÆÁ£×ÓÏµÍ³
   const cloudGeometry = new THREE.BufferGeometry()
   const cloudVertices = []
   const cloudCount = 200
 
-  // ÔÚ¶¥²¿ÇøÓò£¨y=150¸½½ü£©Éú³ÉËæ»úÔÆ²ãÎ»ÖÃ
   for (let i = 0; i < cloudCount; i++) {
     cloudVertices.push(
-      Math.random() * 400 - 200, // x ¡Ê [-200, 200)
-      150 + Math.random() * 20,  // y ¡Ê [150, 170)
-      Math.random() * 400 - 200  // z ¡Ê [-200, 200)
+      Math.random() * 400 - 200, // x ï¿½ï¿½ [-200, 200)
+      150 + Math.random() * 20,  // y ï¿½ï¿½ [150, 170)
+      Math.random() * 400 - 200  // z ï¿½ï¿½ [-200, 200)
     )
   }
 
@@ -93,33 +74,29 @@ const createRainEffect = () => {
     new THREE.Float32BufferAttribute(cloudVertices, 3)
   )
 
-  // ÎÚÔÆ²ÄÖÊÉèÖÃ£¨Éî»ÒÉ«£¬´ó³ß´ç£¬°ëÍ¸Ã÷£©
   const cloudMaterial = new THREE.PointsMaterial({
     color: 0x444444,
-    size: 15,            // ´ó³ß´çµãÄ£ÄâÔÆ¶ä
+    size: 15,            // ï¿½ï¿½ß´ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Æ¶ï¿½
     transparent: true,
     opacity: 0.3,
-    depthWrite: false    // ½ûÓÃÉî¶ÈĞ´Èë£¨ÓÅ»¯°ëÍ¸Ã÷äÖÈ¾£©
+    depthWrite: false   
   })
 
   cloudParticles = new THREE.Points(cloudGeometry, cloudMaterial)
   scene.add(cloudParticles)
 
-  // ´´½¨ÓêÏß×é£¨°üº¬1000ÌõÏß¶Î£©
   rainLines = new THREE.Group()
   const rainCount = 1000
 
   for (let i = 0; i < rainCount; i++) {
-    // ´´½¨´¹Ö±Ïß¶Î¼¸ºÎÌå£¨³¤¶È15µ¥Î»£©
     const geometry = new THREE.BufferGeometry()
     const vertices = new Float32Array([
-      0, 0, 0,   // Æğµã
-      0, -15, 0  // ÖÕµã£¨ÏòÏÂÑÓÉì£©
+      0, 0, 0,   // ï¿½ï¿½ï¿½
+      0, -15, 0  // ï¿½Õµã£¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì£©
     ])
 
     geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
 
-    // ÓêÏß²ÄÖÊ£¨ÌìÀ¶É«£¬°ëÍ¸Ã÷£©
     const material = new THREE.LineBasicMaterial({
       color: 0x6699cc,
       transparent: true,
@@ -127,37 +104,29 @@ const createRainEffect = () => {
     })
 
     const line = new THREE.Line(geometry, material)
-    // Ëæ»ú³õÊ¼»¯ÓêÏßÎ»ÖÃ
     line.position.set(
-      Math.random() * 400 - 200,  // x ¡Ê [-200, 200)
-      Math.random() * 300 + 150,  // y ¡Ê [150, 450)
-      Math.random() * 400 - 200   // z ¡Ê [-200, 200)
+      Math.random() * 400 - 200, 
+      Math.random() * 300 + 150, 
+      Math.random() * 400 - 200  
     )
     rainLines.add(line)
   }
   scene.add(rainLines)
 }
 
-/**
- * ¸üĞÂÓêµÎ¶¯»­
- * ÊµÏÖÂß¼­£º
- * 1. ÎÚÔÆÁ£×ÓË®Æ½»ºÂı²¨¶¯
- * 2. ÓêÏßÏÂÂäÖÁµ×²¿ºóÖØÖÃµ½¶¥²¿
- */
+
 const animateRain = () => {
   if (!rainLines) return
 
-  // ¸üĞÂÎÚÔÆÁ£×ÓË®Æ½Î»ÖÃ£¨ÕıÏÒ²¨¶¯£©
   const cloudPositions = cloudParticles.geometry.attributes.position.array as Float32Array
   for (let i = 0; i < cloudPositions.length; i += 3) {
     cloudPositions[i] += Math.sin(Date.now() * 0.001) * 0.02
   }
   cloudParticles.geometry.attributes.position.needsUpdate = true
 
-  // ¸üĞÂÓêÏßÎ»ÖÃ£¨ĞÂÔöÏÂÂäÂß¼­£©
-  const fallSpeed = 2 // ÓêµÎÏÂÂäËÙ¶È
+  const fallSpeed = 2 
   rainLines.children.forEach(line => {
-    line.position.y -= fallSpeed // ĞÂÔö£ºÃ¿Ö¡ÏòÏÂÒÆ¶¯
+    line.position.y -= fallSpeed 
 
     if (line.position.y < -150) {
       line.position.y = 150 + Math.random() * 50
@@ -167,7 +136,6 @@ const animateRain = () => {
   })
 }
 
-// äÖÈ¾Ñ­»·
 const animate = () => {
   animationFrameId = requestAnimationFrame(animate)
 
@@ -180,14 +148,11 @@ const animate = () => {
   renderer.render(scene, camera)
 }
 
-// ³õÊ¼»¯³¡¾°
 const initScene = () => {
   if (!container.value) return
 
-  // ´´½¨³¡¾°
   scene = new THREE.Scene()
 
-  // ´´½¨Ïà»ú
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -196,32 +161,27 @@ const initScene = () => {
   )
   camera.position.z = 100
 
-  // ´´½¨äÖÈ¾Æ÷
   renderer = new THREE.WebGLRenderer({ alpha: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
   container.value.appendChild(renderer.domElement)
 
 
 
-  // ¸ù¾İÖ÷Ìâ´´½¨Ğ§¹û
   if (props.isDark) {
     createStars()
   } else {
     createRainEffect()
   }
-  // ¿ªÊ¼¶¯»­
   animate()
 }
-// ¼àÌıÖ÷Ìâ±ä»¯
 watch(() => props.isDark, (newValue) => {
   if (!scene) return
 
-  // Çå³ıÏÖÓĞĞ§¹û
   if (stars) scene.remove(stars)
   if (rainLines) scene.remove(rainLines)
   if (cloudParticles) scene.remove(cloudParticles)
 
-  // ´´½¨ĞÂĞ§¹û
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½
   if (newValue) {
     createStars()
   } else {
@@ -229,7 +189,7 @@ watch(() => props.isDark, (newValue) => {
   }
 })
 
-// ¼àÌı´°¿Ú´óĞ¡±ä»¯
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ğ¡ï¿½ä»¯
 const handleResize = () => {
   if (!camera || !renderer) return
 

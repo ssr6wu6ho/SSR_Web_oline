@@ -1,11 +1,9 @@
 <!--职责：主文件负责布局和状态栏的位置信息，但不直接处理状态栏的折叠逻辑。-->
-<!--使用状态：通过Pinia store获取状态栏的折叠状态，并根据状态调整布局。-->
 <template>
-  <starBackground :is-dark="darkModeStore.isDark" class="fixed inset-0 z-5" />
+  <!--pointer-events-none pointer-events: none;，这样鼠标事件会穿透该组件，从而不会影响滚动条的使用。-->
+  <starBackground :is-dark="darkModeStore.isDark" class="fixed pointer-events-none" />
   <!-- 鼠标跟随效果 -->
-  <div class="pointer-events-none fixed inset-0  transition-opacity duration-300" :style="{
-    background: `radial-gradient(600px at ${mouseX}px ${mouseY}px, rgba(100, 100, 255, 0.03), transparent 80%)`
-  }"></div>
+  <div class=" fixed transition-opacity duration-300" :style="getMouseFollowStyle(1, 1)"></div>
   <!-- <LoadAnimation ref="loadAnimation" /> -->
   <!--全局背景以及字体颜色-->
   <div class="min-h-screen font-mono transition-colors duration-300" :class="[
@@ -26,42 +24,31 @@
     }">
       <LeftPanel />
     </div>
+
     <!-- 主要内容区域 -->
     <div v-if="currentViewStore.isHomePage" class="duration-300 z-50"
       :class="[slideBarExtendStore.leftBarExtend ? 'ml-[300px]' : 'ml-[50px]']">
-      <!-- 包裹所有页面并启用滚动 -->
-      <div ref="scrollContainer" class="overflow-y-auto h-screen ">
-        <div class="w-full">
-          <div ref="homePage" :style="{
-            transform: `perspective(1000px) 
-            rotateY(${mouseX * 2}deg)
-            rotateX(${-mouseY * 2}deg)
-            scale(1.02)`,
-          }">
-            <HomePage />
-          </div>
-          <div ref="techPage">
-            <TechPage />
-          </div>
-          <div ref="lifePage">
-            <LifePage />
-          </div>
-          <div ref="musicPage">
-            <MusicListPage />
-          </div>
-        </div>
-      </div>
+      <main>
+        <section ref="homePage" id="page-0">
+          <HomePage />
+        </section>
+        <section ref="techPage" id="page-2">
+          <TechPage />
+        </section>
+        <section ref="lifePage" id="page-3">
+          <LifePage />
+        </section>
+        <section ref="musicPage" id="page-4">
+          <MusicListPage />
+        </section>
+      </main>
     </div>
     <div v-else>
       <router-view></router-view>
     </div>
     <!-- 音乐播放器 -->
-    <div v-show="currentPageStore.currentIndex" class="fixed bottom-6 right-6 duration-300 z-10" :style="{
-      transform: `perspective(1000px) 
-            rotateY(${mouseX * 10}deg)
-            rotateX(${-mouseY * 10}deg)
-            scale(1.02)`,
-    }">
+    <div v-show="currentPageStore.currentIndex" class="fixed bottom-6 right-6 duration-300 z-10"
+      :style="getMouseFollowStyle(1, 10)">
       <MusicPanel />
     </div>
   </div>
@@ -72,58 +59,82 @@ import { ref, onMounted, onUnmounted, watch } from "vue";
 import {
   userDarkMOdel,
   userSlideBarExtend,
-  userCurrentPage,
-  userCurrentView
+  userCurrentView,
+  userCurrentPage
 } from "../store/stateStore";
-import Lenis from "lenis";
 import MusicPanel from "./components/MusicPanel.vue";
 import LeftPanel from "./components/LeftPanel.vue";
 import RightTopPanel from "./components/RightTopPanel.vue";
 // import LoadAnimation from "../utils/LoadAnimation.vue";
 import starBackground from "./starBackground.vue";
-
 import TechPage from "./Pages/TechPage.vue";
 import LifePage from "./Pages/LifePage.vue";
 import MusicListPage from "./Pages/MusicListPage.vue";
 import HomePage from "./Pages/HomePage.vue";
 import { useRouter } from 'vue-router'
-
-
-const lenis = ref<Lenis>();
-const router = useRouter();
-
 // const loadAnimation = ref();
-//页面元素
-const scrollContainer = ref<HTMLElement | null>(null);
-const pages = ref<HTMLElement[]>([]);
-const homePage = ref<HTMLElement | null>(null);
-const techPage = ref<HTMLElement | null>(null);
-const lifePage = ref<HTMLElement | null>(null);
-const musicPage = ref<HTMLElement | null>(null);
 //状态获取
+const router = useRouter();
 const darkModeStore = userDarkMOdel();
 const slideBarExtendStore = userSlideBarExtend();
+const currentViewStore = userCurrentView();
 const currentPageStore = userCurrentPage();
-const currentViewStore = userCurrentView()
 //辅助响应的
 const windowWidth = ref(window.innerWidth);
 const mouseX = ref(0);
 const mouseY = ref(0);
-// 获取所有页面
-const getPages = () => {
-  pages.value = [
-    homePage.value!,
-    techPage.value!,
-    lifePage.value!,
-    musicPage.value!,
-  ];
-};
+//页面获取
+const homePage = ref<HTMLElement | null>(null);
+const techPage = ref<HTMLElement | null>(null);
+const lifePage = ref<HTMLElement | null>(null);
+const musicPage = ref<HTMLElement | null>(null);
 
 // 监听路由变化
 watch(() => router.currentRoute.value.path, (newPath) => {
   currentViewStore.checkRouts(newPath)
   console.log(router.currentRoute.value.path)
 })
+
+// pinia订阅
+currentPageStore.$subscribe((mutation, state) => {
+  if (state.currentIndex === 0) {
+    // 进入 HomePage 时强制收起侧边栏
+    slideBarExtendStore.leftBarExtend = false;
+    slideBarExtendStore.musicBarExtend = false;
+  }
+  console.log(mutation);
+});
+
+const renewNavBar = () => {
+  const scrollPosition = window.scrollY + window.innerHeight / 3;
+  // 检查哪个部分在视图中
+  if (homePage.value && scrollPosition < homePage.value.offsetTop + homePage.value.offsetHeight) {
+    currentPageStore.setCurrentPage(0);
+  } else if (techPage.value && scrollPosition < techPage.value.offsetTop + techPage.value.offsetHeight) {
+    currentPageStore.setCurrentPage(1);
+  } else if (lifePage.value && scrollPosition < lifePage.value.offsetTop + lifePage.value.offsetHeight) {
+    currentPageStore.setCurrentPage(2);
+  } else if (musicPage.value && scrollPosition < musicPage.value.offsetTop + musicPage.value.offsetHeight) {
+    currentPageStore.setCurrentPage(3);
+  }
+}
+
+onMounted(async () => {
+  //loadAnimation.value.show();
+  window.addEventListener("resize", updateWidth);
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("scroll", renewNavBar);
+  updateWidth();
+  renewNavBar();
+  slideBarExtendStore.leftBarExtend = false;
+  slideBarExtendStore.musicBarExtend = false;
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+  window.removeEventListener("mousemove", handleMouseMove);
+  window.addEventListener("scroll", renewNavBar);
+});
 
 const updateWidth = () => {
   windowWidth.value = window.innerWidth;
@@ -134,132 +145,31 @@ const handleMouseMove = (e: MouseEvent) => {
   mouseX.value = (e.clientX / window.innerWidth - 0.5) * 2; // 归一化为[-1,1]
   mouseY.value = (e.clientY / window.innerHeight - 0.5) * 2;
 };
-const initLenis = () => {
-  if (scrollContainer.value) {
-    lenis.value = new Lenis({
-      wrapper: scrollContainer.value, // 指定滚动容器
-      duration: 0.5, // 滚动动画时长
-      orientation: "vertical", // 垂直滚动
-      gestureOrientation: "vertical",
-    });
-    // 滚动事件处理
-    lenis.value.on("scroll", ({ scroll }) => {
-      updateCurrentIndex(scroll);
-    });
-    // RAF循环
-    //一个使用 requestAnimationFrame 的递归调用
-    // 用于在浏览器每一帧渲染时执行 Lenis 的平滑滚动逻辑
-    function raf(time: number) {
-      lenis.value?.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-  }
+// 鼠标跟随移动的计算方法
+const getMouseFollowStyle = (scaleFactor: number, rotateFactor: number) => {
+  return {
+    transform: `perspective(1000px) 
+      rotateY(${mouseX.value * rotateFactor}deg) 
+      rotateX(${-mouseY.value * rotateFactor}deg) 
+      scale(${scaleFactor})`
+  };
 };
-// 滚动到指定页面
-const scrollToPage = (index: number) => {
-  if (!lenis.value || !pages.value[index]) return;
-  lenis.value.scrollTo(pages.value[index], {
-    immediate: false,
-    lock: true, // 滚动期间锁定其他交互
-    duration: 1,
-    onComplete: () => {
-      currentPageStore.setCurrentPage(index);
-    },
-  });
-};
-
-// 精准计算当前页面索引
-const updateCurrentIndex = (scrollPosition: number) => {
-  if (!pages.value) return;
-
-  const containerHeight = scrollContainer.value?.clientHeight || 0;
-  const centerThreshold = containerHeight / 2;
-
-  for (let i = 0; i < pages.value.length; i++) {
-    const page = pages.value[i];
-    const pageTop = page.offsetTop;
-    const pageBottom = pageTop + page.offsetHeight;
-
-    if (
-      scrollPosition + centerThreshold >= pageTop &&
-      scrollPosition + centerThreshold < pageBottom
-    ) {
-      if (currentPageStore.currentIndex !== i) {
-        currentPageStore.setCurrentPage(i);
-      }
-      break;
-    }
-  }
-};
-// 现有的订阅
-currentPageStore.$subscribe((mutation, state) => {
-  if (state.currentIndex === 0) {
-    // 进入 HomePage 时强制收起侧边栏
-    slideBarExtendStore.leftBarExtend = false;
-    slideBarExtendStore.musicBarExtend = false;
-  } else {
-    // 切换到其他页面时根据窗口宽度恢复状态
-    //slideBarExtendStore.leftBarExtend = windowWidth.value >= 1024;
-    scrollToPage(currentPageStore.currentIndex);
-  }
-  if (mutation) {
-    console.log(mutation)
-  }
-});
-
-onMounted(async () => {
-  //loadAnimation.value.show();
-  window.addEventListener("resize", updateWidth);
-  window.addEventListener("mousemove", handleMouseMove);
-  updateWidth();
-  slideBarExtendStore.leftBarExtend = false;
-  slideBarExtendStore.musicBarExtend = false;
-  //setTimeout(() => loadAnimation.value?.hide(), 1000);
-  getPages();
-  initLenis();
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-  window.removeEventListener("mousemove", handleMouseMove);
-  if (lenis.value) {
-    lenis.value.destroy();
-  }
-});
 </script>
 
 <style scoped>
-/* 滚动条整体样式 */
 ::-webkit-scrollbar {
   width: 5px;
-  /* 滚动条宽度 */
   background-color: transparent;
-  /* 使滚动条背景透明 */
 }
 
-/* 滚动条轨道样式 */
 ::-webkit-scrollbar-track {
   background-color: transparent;
-  /* 使轨道背景透明 */
   border-radius: 20px;
-  /* 轨道圆角 */
 }
 
-/* 滚动条滑块样式 */
 ::-webkit-scrollbar-thumb {
   background-color: #8661618e;
-  /* 滑块背景颜色 */
   border-radius: 10px;
   border: 3px solid transparent;
-  /* 移除边框以减少滑块的可见性 */
-}
-
-/* 移动端侧边栏适配 */
-@media (max-width: 767px) {
-  .mobile-sidebar {
-    transform-origin: top center;
-    white-space: nowrap;
-  }
 }
 </style>

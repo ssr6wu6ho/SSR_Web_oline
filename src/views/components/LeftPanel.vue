@@ -11,8 +11,7 @@
         </div>
         <!-- 折叠后的图标导航 -->
         <div class="p-2 space-y-4">
-            <!--当用户点击 nav 元素时，会触发 emit 方法，发送一个名为 navClick 的事件，并传递当前 route 的 index 作为参数。-->
-            <nav v-for="route in mainRoutes" class="flex items-center p-2 rounded-lg   group "
+            <nav v-for="route in mainRoutes" class="flex items-center p-2 rounded-lg group "
                 @click="setIndex(route.index)" :class="[
                     route.index === CurrentPageStore.currentIndex ? 'bg-gray-300/40' :
                         darkModeStore.isDark ? 'hover:bg-zinc-700/30' : 'hover:bg-gray-400',
@@ -143,30 +142,27 @@ const secondaryRoutes = [
 ]
 const setIndex = (newIndex: number) => {
     CurrentPageStore.currentIndex = newIndex;
-    console.log(CurrentPageStore.currentIndex)
 }
 
 const routeToPage = (route: typeof secondaryRoutes[number]) => {
-    //实现完全跳转
     window.location.href = route.path
 }
 
-// 系统状态数据
-const systemStats = ref([ // 系统状态数据
+const systemStats = ref([
     {
         name: 'CPU LOAD',
         value: 45,
-        color: 'bg-blue-500' // CPU 负载进度条颜色
+        color: 'bg-blue-500'
     },
     {
         name: 'MEMORY',
         value: 72,
-        color: 'bg-purple-500' // 内存使用进度条颜色
+        color: 'bg-purple-500'
     },
     {
         name: 'NETWORK',
         value: 89,
-        color: 'bg-green-500' // 网络状态进度条颜色
+        color: 'bg-green-500'
     }
 ])
 // 模拟系统状态数据变化

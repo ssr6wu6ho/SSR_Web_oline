@@ -1,42 +1,41 @@
 <template>
-  <div class="relative min-h-screen w-full overflow-hidden">
-    <!-- 主要内容 -->
-    <main class="relative flex min-h-screen items-center px-8 lg:px-16">
-      <div class="w-full max-w-5xl animate-float">
-        <!-- 标题区域 -->
-        <div class="space-y-6 backdrop-blur-sm p-6 rounded-2xl bg-white/5">
-          <h2 class="text-xl font-medium tracking-wide text-gray-400">
-            {{ displayText }}
-          </h2>
-          <h1 class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-gray-100">
-            Shi ShuangRan
-            <span class="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              🛹👻🛹
-            </span>
-          </h1>
-          <p class="max-w-[600px] text-lg text-gray-400">
-            大三本科在读 / 欢迎
-          </p>
-        </div>
-        <!-- 技能标签 -->
-        <div class="mt-12 flex flex-wrap gap-3">
-          <div v-for="skill in skills" :key="skill"
-            class="group cursor-pointer rounded-full backdrop-blur-md transition-all hover:scale-105 hover:-translate-y-1 bg-zinc-800/50 hover:bg-zinc-700/50">
-            <span class="flex items-center gap-2 px-4 py-2 text-sm text-gray-300">
-              {{ skill }}
-            </span>
-          </div>
-        </div>
-        <!-- 按钮组 -->
-        <div class="mt-12 flex gap-4">
+  <!-- 主要内容 -->
+  <main class="relative flex min-h-screen items-center">
+    <section v-if="darkModeStore.isDark" class="w-full max-w-5xl  px-8 lg:px-16 animate-float">
+      <div class="space-y-6 backdrop-blur-sm p-6 rounded-2xl bg-white/5">
+        <h2 class="text-xl font-medium tracking-wide text-gray-400">
+          {{ displayText }}
+        </h2>
+        <h1 class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-gray-100">
+          Shi ShuangRan
+          <span class="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            🛹👻🛹
+          </span>
+        </h1>
+        <p class="max-w-[600px] text-lg text-gray-400">
+          大三本科在读 / 欢迎
+        </p>
+      </div>
+      <!-- 技能标签 -->
+      <div class="mt-12 flex flex-wrap gap-3">
+        <div v-for="skill in skills" :key="skill"
+          class="group cursor-pointer rounded-full backdrop-blur-md transition-all hover:scale-105 hover:-translate-y-1 bg-zinc-800/50 hover:bg-zinc-700/50">
+          <span class="flex items-center gap-2 px-4 py-2 text-sm text-gray-300">
+            {{ skill }}
+          </span>
         </div>
       </div>
-    </main>
-  </div>
+    </section>
+   <section v-else class="w-full animate-float">
+  </section>
+  </main>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { userDarkMOdel } from '../../store/stateStore'
+
+const darkModeStore = userDarkMOdel();
 
 // 响应式状态
 const displayText = ref('')

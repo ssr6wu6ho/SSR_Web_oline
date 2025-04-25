@@ -1,5 +1,5 @@
 <template>
-    <div class=" p-4 z-50">
+    <section v-if="darkModeStore.isDark" class=" p-4 z-50">
         <div class="flex gap-4">
             <a v-for="tech in IconAndUrl" :key="tech.name" :href="tech.url" class=" hover:text-white  "
                 :title="tech.name">
@@ -10,7 +10,22 @@
                 <SunIcon v-else class="w-6 h-6 hover:text-white" />
             </button>
         </div>
-    </div>
+    </section>
+
+    
+    <section v-else class=" p-4 z-50">
+        <div class="flex gap-4">
+            <a v-for="tech in IconAndUrl" :key="tech.name" :href="tech.url" class=" hover:text-white  "
+                :title="tech.name">
+                <component :is="tech.icon" class="w-6 h-6" />
+            </a>
+            <button @click="toggleTheme">
+                <MoonIcon v-if="darkModeStore.isDark" class="w-6 h-6 hover:text-white" />
+                <SunIcon v-else class="w-6 h-6 hover:text-white" />
+            </button>
+        </div>
+      
+    </section>
 
 </template>
 

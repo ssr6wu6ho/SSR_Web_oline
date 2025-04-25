@@ -26,23 +26,24 @@
         </div>
       </div>
     </section>
-   <section v-else class="w-full animate-float">
-  </section>
+    <section v-else class="space-y-6 bg-white/5 rounded-xl p-8 w-full backdrop-blur-sm animate-float">
+    <h1 class="text-7xl">SSR</h1>
+    </section>
   </main>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted ,onUnmounted } from 'vue'
 import { userDarkMOdel } from '../../store/stateStore'
 
 const darkModeStore = userDarkMOdel();
 
-// 响应式状态
+let currentIndex = 0
 const displayText = ref('')
 const topText = ["<WELCOME TO MY SPACE />", "<STUDENT />", "<SSR />"]
-let currentIndex = 0
-let textCurrentIndex = 0;
-let isAddText = true;
+let currentTextIndex = 0
+let typingDirection = 'forward'
+let timeoutId = null
 
 // 技能列表
 const skills = [
@@ -52,45 +53,39 @@ const skills = [
   'Creative Coding',
 ]
 
-const typeTopText = () => {
-  if (currentIndex < topText.length) {
-    if (isAddText) {
-      const currentString = topText[currentIndex];
-      if (textCurrentIndex < currentString.length) {
-        // 显示字符串
-        displayText.value += currentString[textCurrentIndex];
-        textCurrentIndex++;
-        setTimeout(typeTopText, 100);
-        if (textCurrentIndex === currentString.length) {
-          setTimeout(() => { }, 1000);
-          isAddText = false;
-        }
-      }
+const typeText = () => {
+  const currentText = topText[currentTextIndex]
+  
+  if (typingDirection === 'forward') {
+    // 正向输入
+    if (displayText.value.length < currentText.length) {
+      displayText.value = currentText.substring(0, displayText.value.length + 1)
+      timeoutId = setTimeout(typeText, 150)
+    } else {
+      // 完成输入后等待1秒开始删除
+      typingDirection = 'backward'
+      timeoutId = setTimeout(typeText, 1000)
     }
-    if (!isAddText) {
-      if (textCurrentIndex > 0) {
-        displayText.value = displayText.value.slice(0, -1);
-        textCurrentIndex--;
-        setTimeout(typeTopText, 100);
-      }
-    }
-    if (textCurrentIndex === 0) {
-      setTimeout(() => { }, 1000);
-      currentIndex++;
-      isAddText = true;
+  } else {
+    // 反向删除
+    if (displayText.value.length > 0) {
+      displayText.value = displayText.value.slice(0, -1)
+      timeoutId = setTimeout(typeText, 100)
+    } else {
+      // 完成删除后切换下一个文本并重置方向
+      currentTextIndex = (currentTextIndex + 1) % topText.length
+      typingDirection = 'forward'
+      timeoutId = setTimeout(typeText, 500) // 切换文本前的延迟
     }
   }
 }
-const handleMouseMove = (e) => {
-  mousePosition.value = { x: e.clientX, y: e.clientY }
-}
 
-// 生命周期钩子
 onMounted(() => {
-  typeTopText()
+  typeText()
 })
 
-
+onUnmounted(() => {
+  clearTimeout(timeoutId)
+})
 </script>
 
-<style scoped></style>

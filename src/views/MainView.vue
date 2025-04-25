@@ -4,7 +4,6 @@
   <starBackground :is-dark="darkModeStore.isDark" class="fixed pointer-events-none" />
   <!-- 鼠标跟随效果 -->
   <div class=" fixed transition-opacity duration-300" :style="getMouseFollowStyle(1, 1)"></div>
-  <!-- <LoadAnimation ref="loadAnimation" /> -->
   <!--全局背景以及字体颜色-->
   <div class="min-h-screen font-mono transition-colors duration-300" :class="[
     darkModeStore.isDark
@@ -65,14 +64,12 @@ import {
 import MusicPanel from "./components/MusicPanel.vue";
 import LeftPanel from "./components/LeftPanel.vue";
 import RightTopPanel from "./components/RightTopPanel.vue";
-// import LoadAnimation from "../utils/LoadAnimation.vue";
 import starBackground from "./starBackground.vue";
 import TechPage from "./Pages/TechPage.vue";
 import LifePage from "./Pages/LifePage.vue";
 import MusicListPage from "./Pages/MusicListPage.vue";
 import HomePage from "./Pages/HomePage.vue";
 import { useRouter } from 'vue-router'
-// const loadAnimation = ref();
 //状态获取
 const router = useRouter();
 const darkModeStore = userDarkMOdel();
@@ -110,10 +107,13 @@ const renewNavBar = () => {
   // 检查哪个部分在视图中
   if (homePage.value && scrollPosition < homePage.value.offsetTop + homePage.value.offsetHeight) {
     currentPageStore.setCurrentPage(0);
+    console.log("homePage")
   } else if (techPage.value && scrollPosition < techPage.value.offsetTop + techPage.value.offsetHeight) {
     currentPageStore.setCurrentPage(1);
+    console.log("techPage")
   } else if (lifePage.value && scrollPosition < lifePage.value.offsetTop + lifePage.value.offsetHeight) {
     currentPageStore.setCurrentPage(2);
+    console.log("lifePage")
   } else if (musicPage.value && scrollPosition < musicPage.value.offsetTop + musicPage.value.offsetHeight) {
     currentPageStore.setCurrentPage(3);
   }
@@ -156,20 +156,4 @@ const getMouseFollowStyle = (scaleFactor: number, rotateFactor: number) => {
 };
 </script>
 
-<style scoped>
-::-webkit-scrollbar {
-  width: 5px;
-  background-color: transparent;
-}
 
-::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 20px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #8661618e;
-  border-radius: 10px;
-  border: 3px solid transparent;
-}
-</style>

@@ -4,10 +4,11 @@
       <component :is="CodeIcon" class="w-6 h-6" />
       PROJECTS
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 justify-content">
-      <section class="mb-16 col-span-3  grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <main class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 justify-content
+      border rounded-2xls border-gray-400/20 border-2 p-8 rounded-3xl">
+      <section class="mb-16 col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div v-for="project in projects" :key="project.id"
-          class="group relative rounded-lg overflow-hidden transition-colors p-4 hover:bg-slate-200/30"
+          class="relative rounded-lg overflow-hidden transition-colors p-4 hover:bg-slate-200/30"
           :class="[darkModeStore.isDark ? 'bg-zinc-800/50' : 'bg-slate-500/30 shadow-lg']">
           <div class="aspect-video relative">
             <img :src="project.image" :alt="project.title"
@@ -39,7 +40,6 @@
         <div class="gap-8 justify-content ">
           <h3 class="text-xl font-bold mb-2 flex items-center">TECH-STACK</h3>
           <div class="p-6 rounded-lg">
-            <!-- Frontend Section -->
             <div v-for="skill in TECH_STACK" key="skills" class="mb-8">
               <h3 :class="skill.title" class="text-gray-400 mb-4">{{ skill.title }}</h3>
               <div class="flex flex-wrap items-center gap-2 mb-2">
@@ -68,7 +68,9 @@
           </div>
         </div>
       </section>
-    </div>
+    </main>
+
+
     <!-- Fan-like Praise Section 
     <section class="relative">
       <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">

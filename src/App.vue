@@ -10,28 +10,12 @@ import MainView from './views/MainView.vue';
 /* 整体滚动条 */
 ::-webkit-scrollbar {
   width: 10px;
-  /* 滚动条宽度 */
-}
-
-::-webkit-scrollbar-track {
-  background: linear-gradient(90deg, rgba(241, 241, 241, 0.8), rgba(255, 255, 255, 0.8));
-  border-radius: 10px;
-  /* 圆角 */
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-  /* 内部阴影 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #6b4646;
+  background-color: #9265a7;
   /* 滑块背景颜色 */
   border-radius: 10px;
-  /* 圆角 */
-  border: 3px solid transparent;
-  /* 边框 */
-  background-clip: padding-box;
-  /* 背景裁剪 */
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-  /* 内部阴影 */
 }
 
 ::-webkit-scrollbar-thumb:hover {

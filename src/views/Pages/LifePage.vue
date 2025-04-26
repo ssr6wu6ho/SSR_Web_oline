@@ -4,11 +4,11 @@
     <!-- Photo Grid -->
     <section class="mb-16">
       <h1 class="text-7xl font-bold mb-8 flex items-center gap-2">
-        🛹 & 📸 & 🎸 & 🛩️
+        🛹 & 📸
       </h1>
-      <LifeChart></LifeChart>
-
-      <div class="grid lg:grid-cols-5 gap-6">
+      <lifeTime class="mb-10"></lifeTime>
+      <div class="grid lg:grid-cols-5 gap-6
+      border rounded-2xls border-gray-400/20 border-2 p-8 rounded-3xl">
         <div class="col-span-2 grid grid-rows-5 gap-6 p-6 mb-2">
           <div class="row-span-4 group relative bg-zinc-800/50 rounded-lg overflow-hidden ">
             <!-- 上半部分：两个并排的视频 -->
@@ -73,37 +73,26 @@
               <img :src="photos[0].cover" alt="Glass Animals"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
             </div>
-
             <div class="group relative aspect-square bg-zinc-800/50 rounded-lg overflow-hidden">
               <img :src="photos[0].cover" alt="Glass Animals"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
             </div>
-
           </div>
         </div>
       </div>
     </section>
-
 
   </div>
 </template>
 
 <script setup>
 import {
-  CameraIcon,
-  BookOpenIcon,
-  HeartIcon,
-  CalendarIcon,
-  MusicIcon,
-  PaletteIcon,
-  PlaneIcon,
-  CoffeeIcon
+  CameraIcon, BookOpenIcon, HeartIcon, CalendarIcon, MusicIcon, PaletteIcon, PlaneIcon, CoffeeIcon
 } from 'lucide-vue-next'
 
 import { storeToRefs } from 'pinia';
 import { userDarkMOdel } from '../../store/stateStore';
-import LifeChart from '../components/LifeChart.vue';
-//import TechChart from '../components/TechChart.vue';
+import lifeTime from '../components/LifeTime.vue'
 const darkModeStore = userDarkMOdel();
 const photos = [
   {
@@ -132,9 +121,10 @@ const videos = [
     id: 1,
     src: '/src/components/1f7c1dbda4e66d651967e2b5d6b6d541.mp4',
   },
-   {id:2,
+  {
+    id: 2,
     src: '/src/components/4f77be389bcdb8f43a3679fc02016a2f.mp4',
-   }
+  }
 ];
 
 const interests = [

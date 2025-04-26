@@ -4,7 +4,7 @@ export const routes = [
   {
     path: "/messagePage",
     name: "messagePage",
-    component: () => import("../views/Pages/MessagePage.vue"),//处理handle
+    component: () => import("../views/Pages/MessagePage.vue"),//锟斤拷锟斤拷handle
   },
   {
     path: "/blogPage",
@@ -16,7 +16,6 @@ export const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  //确保每次路由切换时页面滚动到顶部
   scrollBehavior() {
     return { top: 0 };
   },

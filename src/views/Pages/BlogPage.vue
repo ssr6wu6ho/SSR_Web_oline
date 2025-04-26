@@ -16,37 +16,6 @@
         <div class="prose prose-invert max-w-none rounded-xl backdrop-blur-sm bg-white/5 p-6 lg:p-8">
           <div class="markdown-body" v-html="renderedContent"></div>
         </div>
-
-        <!-- 评论区 
-        <div class="mt-12">
-          <h2 class="mb-6 text-2xl font-bold text-white">评论</h2>
-          <div class="mb-8 rounded-xl backdrop-blur-sm bg-white/5 p-6">
-            <textarea v-model="newComment" rows="4"
-              class="mb-4 w-full rounded-lg border border-gray-700 bg-zinc-800/50 px-4 py-2 text-white focus:border-purple-500 focus:outline-none"
-              placeholder="写下你的评论..."></textarea>
-            <button @click="submitComment"
-              class="rounded-lg bg-purple-500 px-6 py-2 text-white transition-all hover:bg-purple-600 hover:scale-105 active:scale-95">
-              发表评论
-            </button>
-          </div>
-
-          <div class="space-y-6">
-            <div v-for="comment in comments" :key="comment.id" class="rounded-xl backdrop-blur-sm bg-white/5 p-6">
-              <div class="mb-2 flex items-center gap-3">
-                <div class="h-10 w-10 overflow-hidden rounded-full bg-purple-500/20">
-                  <img :src="`https://api.dicebear.com/7.x/initials/svg?seed=${comment.author}`" alt="avatar"
-                    class="h-full w-full object-cover" />
-                </div>
-                <div>
-                  <h3 class="font-medium text-white">{{ comment.author }}</h3>
-                  <p class="text-sm text-gray-400">{{ comment.date }}</p>
-                </div>
-              </div>
-              <p class="text-gray-300">{{ comment.content }}</p>
-            </div>
-          </div>
-        </div>
-        -->
       </article>
     </div>
   </div>
@@ -107,19 +76,6 @@ const post = ref({
   }
     `,
 
-  //   \`\`\`
-  // ## TypeScript 支持
-  // 提供了一流的 TypeScript 支持：
-  // \`\`\`typescript
-  // interface User {
-  //   id: number
-  //   name: string
-  // }
-  // const user = ref<User>({
-  //   id: 1,
-  //   name: '123',
-  // })
-  // \`\`\`
 })
 // 评论数据
 const comments = ref([

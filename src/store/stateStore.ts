@@ -33,11 +33,16 @@ export const userSlideBarExtend = defineStore("slideBarExtend", {
 export const userCurrentPage = defineStore("currentPage", {
   state: () => ({
     currentIndex: 0,
+    targetScrollIndex: 0 // 新增滚动目标状态
+
   }),
   actions: {
     setCurrentPage(index: number) {
       this.currentIndex = index;
     },
+    setTargetScrollIndex(index: number) {
+      this.targetScrollIndex = index;
+    }
   },
 });
 //存储是否为第一页面，增加路由监听功能

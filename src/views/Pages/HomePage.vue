@@ -4,7 +4,7 @@
     <section v-if="darkModeStore.isDark" class="w-full max-w-5xl  px-8 lg:px-16 animate-float">
       <div class="space-y-6 backdrop-blur-sm p-6 rounded-2xl bg-white/5">
         <h2 class="text-xl font-medium tracking-wide text-gray-400">
-          {{ displayText }}
+          -- {{ displayText }}
         </h2>
         <h1 class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl text-gray-100">
           Shi ShuangRan
@@ -27,13 +27,13 @@
       </div>
     </section>
     <section v-else class="space-y-6 bg-white/5 rounded-xl p-8 w-full backdrop-blur-sm animate-float">
-    <h1 class="text-7xl">SSR</h1>
+      <h1 class="text-7xl">SSR</h1>
     </section>
   </main>
 </template>
 
 <script setup>
-import { ref, onMounted ,onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { userDarkMOdel } from '../../store/stateStore'
 
 const darkModeStore = userDarkMOdel();
@@ -55,7 +55,7 @@ const skills = [
 
 const typeText = () => {
   const currentText = topText[currentTextIndex]
-  
+
   if (typingDirection === 'forward') {
     // 正向输入
     if (displayText.value.length < currentText.length) {
@@ -88,4 +88,3 @@ onUnmounted(() => {
   clearTimeout(timeoutId)
 })
 </script>
-

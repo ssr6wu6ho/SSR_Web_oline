@@ -11,8 +11,8 @@
         </div>
         <!-- 折叠后的图标导航 -->
         <div class="p-2 space-y-4">
-            <nav v-for="route in mainRoutes" class="flex items-center p-2 rounded-lg group "
-                @click="setIndex(route.index)" :class="[
+            <nav v-for="route in mainRoutes" class="flex items-center p-2 rounded-lg"
+                @click="smoothRouteToPage(route.index)" :class="[
                     route.index === CurrentPageStore.currentIndex ? 'bg-gray-300/40' :
                         darkModeStore.isDark ? 'hover:bg-zinc-700/30' : 'hover:bg-gray-400',
                     slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center'
@@ -23,7 +23,7 @@
                     {{ route.name }}
                 </span>
                 <span v-if="!slideBarExtendStore.leftBarExtend"
-                    class="absolute left-full ml-2 px-2 py-1 text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    class="absolute left-full ml-2 px-2 py-1 text-xs rounded-md opacity-0 transition-opacity duration-200"
                     :class="darkModeStore.isDark ? 'bg-zinc-700 text-white' : 'bg-gray-100 text-black'">
                     {{ route.name }}
                 </span>
@@ -31,16 +31,16 @@
             <div class="p-4 border-t transition-colors"
                 :class="darkModeStore.isDark ? 'border-zinc-700' : 'border-gray-200'">
             </div>
-            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg   group "
-                @click="routeToPage(route)"
-                :class="slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center'">
+            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg" @click="routeToPage(route)"
+                :class="[slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center',
+                darkModeStore.isDark ? 'hover:bg-zinc-700/30' : 'hover:bg-gray-400']">
                 <component :is="route.icon" class="w-5 h-5 shrink-0" />
                 <span v-show="slideBarExtendStore.leftBarExtend"
                     class="ml-2 text-sm truncate transition-opacity duration-300">
                     {{ route.name }}
                 </span>
                 <span v-if="!slideBarExtendStore.leftBarExtend"
-                    class="absolute left-full ml-2 px-2 py-1 text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    class="absolute left-full ml-2 px-2 py-1 text-xs rounded-md opacity-0  transition-opacity duration-200">
                     {{ route.name }}
                 </span>
             </nav>
@@ -67,9 +67,8 @@
                                     <span>{{ stat.name }}</span>
                                     <span>{{ stat.value }}%</span>
                                 </div>
-                                <div class="h-1 rounded-full overflow-hidden"
-                                    :class="darkModeStore.isDark ? 'bg-zinc-700' : 'bg-gray-200'">
-                                    <div class="h-full   duration-500 rounded-full" :class="stat.color"
+                                <div class="h-1 rounded-full overflow-hidden">
+                                    <div class="h-full duration-500 rounded-full" :class="stat.color"
                                         :style="{ width: `${stat.value}%` }"></div>
                                 </div>
                             </div>
@@ -84,15 +83,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-//暗色模式处理
 import { userDarkMOdel, userCurrentPage, userSlideBarExtend } from '../../store/stateStore'
-import { Carousel, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
-
-// 在<script setup>中注册组件
-defineOptions({
-    components: { Carousel, Slide }
-})
 
 const darkModeStore = userDarkMOdel()
 const CurrentPageStore = userCurrentPage()
@@ -111,37 +103,26 @@ function toggleSidebar() {
 // 路由配置
 const mainRoutes = [ // 主要路由
     {
-        index: 1,
-        name: 'TECH_MATRIX',
-        icon: CodeIcon
+        index: 1, name: 'TECH_MATRIX', icon: CodeIcon
     },
     {
-        index: 2,
-        name: 'LIFE_STREAM',
-        icon: HeartIcon
+        index: 2, name: 'LIFE_STREAM', icon: HeartIcon
     },
     {
-        index: 3,
-        name: 'MUSIC',
-        icon: Music
+        index: 3, name: 'MUSIC', icon: Music
     }
 ]
 const secondaryRoutes = [
     {
-        index: 1,
-        name: 'messagePage',
-        icon: MessageSquareDiff,
-        path: '/messagePage'
+        index: 1, name: 'messagePage', icon: MessageSquareDiff, path: '/messagePage'
     },
     {
-        index: 2,
-        name: 'blogPage',
-        icon: Cpu,
-        path: '/blogPage'
+        index: 2, name: 'blogPage', icon: Cpu, path: '/blogPage'
     }
 ]
-const setIndex = (newIndex: number) => {
-    CurrentPageStore.currentIndex = newIndex;
+
+function smoothRouteToPage(_id: number) {
+    CurrentPageStore.setTargetScrollIndex(_id);
 }
 
 const routeToPage = (route: typeof secondaryRoutes[number]) => {
@@ -150,19 +131,13 @@ const routeToPage = (route: typeof secondaryRoutes[number]) => {
 
 const systemStats = ref([
     {
-        name: 'CPU LOAD',
-        value: 45,
-        color: 'bg-blue-500'
+        name: 'CPU LOAD', value: 45, color: 'bg-blue-500'
     },
     {
-        name: 'MEMORY',
-        value: 72,
-        color: 'bg-purple-500'
+        name: 'MEMORY', value: 72, color: 'bg-purple-500'
     },
     {
-        name: 'NETWORK',
-        value: 89,
-        color: 'bg-green-500'
+        name: 'NETWORK', value: 89, color: 'bg-green-500'
     }
 ])
 // 模拟系统状态数据变化
@@ -173,11 +148,3 @@ setInterval(() => {
     }))
 }, 3000) // 每3秒更新一次系统状态数据
 </script>
-
-<style scoped>
-/* 工具提示动画 */
-.group:hover span {
-    transform: translateX(0);
-    opacity: 1;
-}
-</style>

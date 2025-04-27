@@ -46,8 +46,8 @@ const particlesRef = ref<SVGElement | null>(null);
 interface TimeData {
   age: number;
   social: number;
-  game: number;
-  coding: number;
+  hardware: number;
+  fontside: number;
   study: number;
   creativity: number;
   [key: string]: number;
@@ -56,20 +56,21 @@ interface TimeData {
 // 活动定义
 const activities = [
   { key: "social", label: "社交能力", color: "#8dd3c7" },
-  { key: "game", label: "游戏技能", color: "#80b1d3" },
-  { key: "coding", label: "编程能力", color: "#4db6ac" },
+  { key: "hardware", label: "硬件", color: "#80b1d3" },
+  { key: "fontside", label: "前端", color: "#4db6ac" },
   { key: "study", label: "学习能力", color: "#a4c2f4" },
   { key: "creativity", label: "创造力", color: "#ffd8b1" }
 ];
 
 // 模拟时间数据 (0-24岁)
 const timeData: TimeData[] = [
-  { age: 14, social: 8, game: 0, coding: 0, study: 0, creativity: 0 },
-  { age: 16, social: 0, game: 0, coding: 0, study: 0, creativity: 0 },
-  { age: 18, social: 0, game: 19, coding: 0, study: 0, creativity: 0 },
-  { age: 20, social: 0, game: 0, coding: 0, study: 0, creativity: 0 },
-  { age: 22, social: 0, game: 0, coding: 0, study: 0, creativity: 0 },
-  { age: 24, social: 0, game: 0, coding: 0, study: 0, creativity: 0 },
+  { age: 15, social: 8, hardware: 5, fontside: 0, study: 0, creativity: 0 },
+  { age: 16, social: 0, hardware: 10, fontside: 0, study: 0, creativity: 0 },
+  { age: 17, social: 0, hardware: 0, fontside: 0, study: 0, creativity: 0 },
+  { age: 18, social: 0, hardware: 0, fontside: 0, study: 0, creativity: 0 },
+  { age: 19, social: 0, hardware: 30, fontside: 0, study: 0, creativity: 0 },
+  { age: 20, social: 0, hardware: 40, fontside: 7, study: 0, creativity: 0 },
+  { age: 21, social: 0, hardware: 30, fontside: 35, study: 0, creativity: 0 }
 ];
 
 // 获取当前年龄的数据
@@ -110,7 +111,7 @@ const drawChart = () => {
 
   // 创建x轴比例尺
   const x = d3.scaleLinear()
-    .domain([14, 24])
+    .domain([15, 21])
     .range([0, innerWidth]);
 
   // 创建y轴比例尺
@@ -176,8 +177,8 @@ const drawChart = () => {
   // 添加活动标签
   const activityPositions = [
     { key: "social", x: 20, y: 85 },
-    { key: "game", x: 8, y: 60 },
-    { key: "coding", x: 20, y: 40 },
+    { key: "hardware", x: 8, y: 60 },
+    { key: "fontside", x: 20, y: 40 },
     { key: "study", x: 6, y: 30 },
     { key: "creativity", x: 16, y: 70 }
   ];
@@ -338,7 +339,6 @@ watch(selectedAge, () => {
 onMounted(() => {
   drawChart();
   drawParticles();
-
   window.addEventListener('resize', handleResize);
 });
 

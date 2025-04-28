@@ -99,7 +99,6 @@ function toggleSidebar() {
     slideBarExtendStore.toggleLeftBarExtend();
 }
 
-let MessageArr: number[];
 // 路由配置
 const mainRoutes = [ // 主要路由
     { index: 1, name: 'TECH_MATRIX', icon: CodeIcon },

@@ -18,7 +18,7 @@
       <div class="space-y-3">
         <div v-for="activity in activities" :key="activity.key" class="w-full">
           <div class="flex justify-between mb-1 text-sm">
-            <span>{{ activity.label }}</span>
+            <span>{{ activity.key }}</span>
             <span>{{ getCurrentAgeData(activity.key) }}%</span>
           </div>
           <div class=" h-2 rounded-full overflow-hidden">
@@ -47,7 +47,7 @@ interface TimeData {
   age: number;
   social: number;
   hardware: number;
-  fontside: number;
+  Coding: number;
   study: number;
   creativity: number;
   [key: string]: number;
@@ -55,22 +55,22 @@ interface TimeData {
 
 // 活动定义
 const activities = [
-  { key: "social", label: "社交能力", color: "#8dd3c7" },
-  { key: "hardware", label: "硬件", color: "#80b1d3" },
-  { key: "fontside", label: "前端", color: "#4db6ac" },
-  { key: "study", label: "学习能力", color: "#a4c2f4" },
-  { key: "creativity", label: "创造力", color: "#ffd8b1" }
+  { key: "social", color: "#8dd3c7" },
+  { key: "hardware", color: "#80b1d3" },
+  { key: "Coding", color: "#4db6ac" },
+  { key: "study", color: "#a4c2f4" },
+  { key: "creativity", color: "#ffd8b1" }
 ];
 
 // 模拟时间数据 (0-24岁)
 const timeData: TimeData[] = [
-  { age: 15, social: 8, hardware: 5, fontside: 0, study: 0, creativity: 0 },
-  { age: 16, social: 0, hardware: 10, fontside: 0, study: 0, creativity: 0 },
-  { age: 17, social: 0, hardware: 0, fontside: 0, study: 0, creativity: 0 },
-  { age: 18, social: 0, hardware: 0, fontside: 0, study: 0, creativity: 0 },
-  { age: 19, social: 0, hardware: 30, fontside: 0, study: 0, creativity: 0 },
-  { age: 20, social: 0, hardware: 40, fontside: 7, study: 0, creativity: 0 },
-  { age: 21, social: 0, hardware: 30, fontside: 35, study: 0, creativity: 0 }
+  { age: 15, social: 8, hardware: 5, Coding: 0, study: 0, creativity: 0 },
+  { age: 16, social: 0, hardware: 10, Coding: 0, study: 0, creativity: 0 },
+  { age: 17, social: 0, hardware: 5, Coding: 0, study: 0, creativity: 0 },
+  { age: 18, social: 0, hardware: 5, Coding: 0, study: 0, creativity: 0 },
+  { age: 19, social: 0, hardware: 30, Coding: 20, study: 0, creativity: 0 },
+  { age: 20, social: 0, hardware: 40, Coding: 0, study: 0, creativity: 0 },
+  { age: 21, social: 0, hardware: 30, Coding: 35, study: 0, creativity: 0 }
 ];
 
 // 获取当前年龄的数据
@@ -99,8 +99,8 @@ const drawChart = () => {
   const width = chartRef.value.clientWidth;
   const height = chartRef.value.clientHeight;
   const margin = { top: 20, right: 30, bottom: 40, left: 50 };
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
+  const innerWidth = width;
+  const innerHeight = height;
 
   // 清除之前的内容
   svg.selectAll("*").remove();
@@ -178,7 +178,7 @@ const drawChart = () => {
   const activityPositions = [
     { key: "social", x: 20, y: 85 },
     { key: "hardware", x: 8, y: 60 },
-    { key: "fontside", x: 20, y: 40 },
+    { key: "Coding", x: 20, y: 40 },
     { key: "study", x: 6, y: 30 },
     { key: "creativity", x: 16, y: 70 }
   ];
@@ -193,7 +193,7 @@ const drawChart = () => {
     .attr("font-size", "14px")
     .attr("font-weight", "bold")
     .attr("fill", d => color(d.key))
-    .text(d => activities.find(a => a.key === d.key)?.label || "");
+    .text(d => activities.find(a => a.key === d.key)?.key || "");
 
   // 添加当前年龄指示线
   g.append("line")

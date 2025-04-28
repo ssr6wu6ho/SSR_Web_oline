@@ -22,12 +22,15 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
+import { userBlogPage } from '../../store/stateStore.ts';
 import MarkdownIt from 'markdown-it'
 import 'prismjs' // 导入 Prism.js
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/themes/prism-tomorrow.css'
+
+const blogPageStore = userBlogPage();
 
 // Markdown 解析器配置
 const md = new MarkdownIt({
@@ -75,17 +78,31 @@ const post = ref({
     }
   }
     `,
-
 })
-// 评论数据
-const comments = ref([
-  {
-    id: 1,
-    author: '自行车自行车',
-    content: '啊八八八八',
-    date: '2024-02-19 14:30',
-  },
-])
+
+
+const post_2 = ref({
+  title: '👻',
+  date: '2024-02-19',
+  author: 'sss',
+  content: `
+  # ..
+  
+  
+  ## So lonsc
+  
+  \`\`\`javascript
+  import { 🍍 } from '🛸'
+  
+  export default {
+    setup() {
+      return { ♥️ }
+    }
+  }
+    `,
+})
+
+
 const newComment = ref('')
 // 渲染的 Markdown 内容
 const renderedContent = ref('')
@@ -108,7 +125,8 @@ const submitComment = () => {
 
 // 渲染 Markdown
 onMounted(() => {
-  renderedContent.value = md.render(post.value.content)
+  if (blogPageStore.blogPage===1) { renderedContent.value = md.render(post.value.content) }
+  else if (blogPageStore.blogPage===2) { renderedContent.value = md.render(post_2.value.content) }
 })
 </script>
 

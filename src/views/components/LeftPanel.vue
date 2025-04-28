@@ -31,8 +31,8 @@
             <div class="p-4 border-t transition-colors"
                 :class="darkModeStore.isDark ? 'border-zinc-700' : 'border-gray-200'">
             </div>
-            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg" @click="routeToPage(route.path)"
-                :class="[slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center',
+            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg"
+                @click="routeToPage(route.path)" :class="[slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center',
                 darkModeStore.isDark ? 'hover:bg-zinc-700/30' : 'hover:bg-gray-400']">
                 <component :is="route.icon" class="w-5 h-5 shrink-0" />
                 <span v-show="slideBarExtendStore.leftBarExtend"
@@ -99,6 +99,7 @@ function toggleSidebar() {
     slideBarExtendStore.toggleLeftBarExtend();
 }
 
+let MessageArr: number[];
 // 路由配置
 const mainRoutes = [ // 主要路由
     { index: 1, name: 'TECH_MATRIX', icon: CodeIcon },

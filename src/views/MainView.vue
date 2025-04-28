@@ -12,12 +12,11 @@
       <RightTopPanel />
     </div>
     <!-- 左侧浮动面板 -->
-    <div v-show="currentPageStore.currentIndex" class="fixed duration-300 z-10"
+    <div v-show="currentPageStore.currentIndex && $route.path === '/'" class="fixed duration-300 z-10"
       :class="[windowWidth < 768 ? 'right-6 top-4 -translate-x-1/2' : 'left-6 top-8']"
       :style="windowWidth < 768 ? { transform: 'rotate(90deg)' } : { transform: `perspective(1500px) rotateY(${mouseX * 5}deg) rotateX(${-mouseY * 5}deg) scale(1.02)` }">
       <LeftPanel />
     </div>
-
     <!-- 主要内容区域 -->
     <div v-if="$route.path === '/'" class="duration-300 z-50"
       :class="[slideBarExtendStore.leftBarExtend ? 'ml-[300px]' : 'ml-[50px]']">
@@ -36,7 +35,6 @@
         </section>
       </main>
     </div>
-
     <div v-else class="duration-300 z-50">
       <router-view></router-view>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <!-- 主要内容 -->
-  <main class="relative flex min-h-screen items-center">
+  <main class="relative flex min-h-screen items-center mr-10">
     <section v-if="darkModeStore.isDark" class="w-full max-w-5xl lg:px-16 animate-float">
       <div class="space-y-6 backdrop-blur-sm p-6 rounded-2xl bg-white/5">
         <h2 class="text-xl font-medium tracking-wide text-gray-400">
@@ -26,7 +26,7 @@
         </div>
       </div>
     </section>
-    <section v-else class="space-y-6 bg-white/5 rounded-xl p-8 w-full backdrop-blur-sm animate-float">
+    <section v-else class="space-y-6 bg-white/5 rounded-xl p-8 w-full max-w-5xl backdrop-blur-sm animate-float">
       <h1 class="text-7xl">SSR</h1>
     </section>
   </main>

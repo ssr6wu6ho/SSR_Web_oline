@@ -46,6 +46,17 @@ export const userCurrentPage = defineStore("currentPage", {
   },
 });
 
+export const userBlogPage = defineStore("blogPage", {
+  state: () => ({
+    blogPage: 1,
+  }),
+  actions: {
+    setBlogPage(index: number) {
+      this.blogPage = index;
+    },
+  },
+});
+
 interface MusicTrack {
   id: number;
   title?: string;

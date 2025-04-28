@@ -19,7 +19,7 @@
     </div>
 
     <!-- 主要内容区域 -->
-    <div v-if="currentViewStore.isHomePage" class="duration-300 z-50"
+    <div v-if="$route.path === '/'" class="duration-300 z-50"
       :class="[slideBarExtendStore.leftBarExtend ? 'ml-[300px]' : 'ml-[50px]']">
       <main>
         <section ref="homePage" id="homePage">
@@ -36,7 +36,8 @@
         </section>
       </main>
     </div>
-    <div v-else>
+
+    <div v-else class="duration-300 z-50">
       <router-view></router-view>
     </div>
     <!-- 音乐播放器 -->
@@ -50,7 +51,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import {
-  userDarkMOdel, userSlideBarExtend, userCurrentView, userCurrentPage
+  userDarkMOdel, userSlideBarExtend, userCurrentPage
 } from "../store/stateStore";
 import MusicPanel from "./components/MusicPanel.vue";
 import LeftPanel from "./components/LeftPanel.vue";
@@ -63,7 +64,6 @@ import HomePage from "./Pages/HomePage.vue";
 //状态获取
 const darkModeStore = userDarkMOdel();
 const slideBarExtendStore = userSlideBarExtend();
-const currentViewStore = userCurrentView();
 const currentPageStore = userCurrentPage();
 //辅助响应的
 const windowWidth = ref(window.innerWidth);
@@ -86,13 +86,10 @@ const renewNavBar = () => {
     currentPageStore.setCurrentPage(0);
     slideBarExtendStore.leftBarExtend = false;
     slideBarExtendStore.musicBarExtend = false;
-    console.log("homePage")
   } else if (techPage.value && scrollPosition < techPage.value.offsetTop + techPage.value.offsetHeight) {
     currentPageStore.setCurrentPage(1);
-    console.log("techPage")
   } else if (lifePage.value && scrollPosition < lifePage.value.offsetTop + lifePage.value.offsetHeight) {
     currentPageStore.setCurrentPage(2);
-    console.log("lifePage")
   } else if (musicPage.value && scrollPosition < musicPage.value.offsetTop + musicPage.value.offsetHeight) {
     currentPageStore.setCurrentPage(3);
   }
@@ -118,7 +115,6 @@ watch(() => currentPageStore.targetScrollIndex,
     }
   }
 );
-
 onMounted(async () => {
   window.addEventListener("resize", updateWidth);
   window.addEventListener("mousemove", handleMouseMove);

@@ -45,18 +45,6 @@ export const userCurrentPage = defineStore("currentPage", {
     }
   },
 });
-//存储是否为第一页面，增加路由监听功能
-export const userCurrentView = defineStore("currentView", {
-  state: () => ({
-    isHomePage: true,
-    specialRoutes: ["/blogPage", "/messagePage"], //需要全局跳转的特殊路由
-  }),
-  actions: {
-    checkRouts(path: string) {
-      this.isHomePage = !this.specialRoutes.includes(path);
-    },
-  },
-});
 
 interface MusicTrack {
   id: number;

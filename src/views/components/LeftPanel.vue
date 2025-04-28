@@ -31,7 +31,7 @@
             <div class="p-4 border-t transition-colors"
                 :class="darkModeStore.isDark ? 'border-zinc-700' : 'border-gray-200'">
             </div>
-            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg" @click="routeToPage(route)"
+            <nav v-for="route in secondaryRoutes" class="flex items-center p-2 rounded-lg" @click="routeToPage(route.path)"
                 :class="[slideBarExtendStore.leftBarExtend ? 'justify-start' : 'justify-center',
                 darkModeStore.isDark ? 'hover:bg-zinc-700/30' : 'hover:bg-gray-400']">
                 <component :is="route.icon" class="w-5 h-5 shrink-0" />
@@ -54,8 +54,7 @@
                 <div class="space-y-4">
                     <div class="p-3 rounded-lg transition-colors">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs">SYSTEM
-                                STATUS</span>
+                            <span class="text-xs">SYSTEM STATUS</span>
                             <span class="flex items-center gap-2 text-xs">
                                 <span class="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                                 ONLINE
@@ -85,11 +84,11 @@ import { ref } from 'vue'
 
 import { userDarkMOdel, userCurrentPage, userSlideBarExtend } from '../../store/stateStore'
 import 'vue3-carousel/dist/carousel.css'
-
+import { useRouter } from 'vue-router'
 const darkModeStore = userDarkMOdel()
 const CurrentPageStore = userCurrentPage()
 const slideBarExtendStore = userSlideBarExtend()
-//取出来的是一个对象，里面有一个isDark属性
+const router = useRouter()
 
 import {
     CodeIcon, HeartIcon, PanelTopOpen, Music,
@@ -102,31 +101,21 @@ function toggleSidebar() {
 
 // 路由配置
 const mainRoutes = [ // 主要路由
-    {
-        index: 1, name: 'TECH_MATRIX', icon: CodeIcon
-    },
-    {
-        index: 2, name: 'LIFE_STREAM', icon: HeartIcon
-    },
-    {
-        index: 3, name: 'MUSIC', icon: Music
-    }
+    { index: 1, name: 'TECH_MATRIX', icon: CodeIcon },
+    { index: 2, name: 'LIFE_STREAM', icon: HeartIcon },
+    { index: 3, name: 'MUSIC', icon: Music }
 ]
 const secondaryRoutes = [
-    {
-        index: 1, name: 'messagePage', icon: MessageSquareDiff, path: '/messagePage'
-    },
-    {
-        index: 2, name: 'blogPage', icon: Cpu, path: '/blogPage'
-    }
+    { index: 1, name: 'messagePage', icon: MessageSquareDiff, path: '/messagePage' },
+    { index: 2, name: 'blogPage', icon: Cpu, path: '/blogPage' }
 ]
 
 function smoothRouteToPage(_id: number) {
     CurrentPageStore.setTargetScrollIndex(_id);
 }
 
-const routeToPage = (route: typeof secondaryRoutes[number]) => {
-    window.location.href = route.path
+const routeToPage = (route: string) => {
+    router.push(route)
 }
 
 const systemStats = ref([
@@ -146,5 +135,6 @@ setInterval(() => {
         ...stat,
         value: Math.floor(Math.random() * 100) // 随机生成新的状态值
     }))
-}, 3000) // 每3秒更新一次系统状态数据
+}, 3000)
+
 </script>

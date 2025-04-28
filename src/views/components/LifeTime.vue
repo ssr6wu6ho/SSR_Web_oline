@@ -238,6 +238,16 @@ const drawChart = () => {
       selectedAge.value = d.age;
     });
 };
+
+interface Particle {
+  x: number;
+  y: number;
+  color: string;
+  radius: number;
+  angle: number;
+  speed: number;
+}
+
 // 绘制粒子图（修复动画版本）
 const drawParticles = () => {
   if (!particlesRef.value) return;

@@ -26,6 +26,49 @@
         </div>
       
     </section>
+    <div class="relative p-2 bg-gray-100 rounded-full w-80">
+    <!-- 滑动背景 -->
+    <div 
+      class="absolute h-10 bg-blue-500 rounded-full transition-all duration-300 w-1/3"
+      :class="{
+        'left-2': activeLang === 'zh',
+        'left-1/3 translate-x-2': activeLang === 'en',
+        'left-2/3 translate-x-4': activeLang === 'ja'
+      }"
+    ></div>
+    
+    <div class="relative flex justify-between h-10">
+      <!-- 中文选项 -->
+      <div
+        class="flex-1 flex items-center justify-center cursor-pointer z-10"
+        @click="activeLang = 'zh'"
+      >
+        <span :class="activeLang === 'zh' ? 'text-white' : 'text-gray-500'">
+          中文
+        </span>
+      </div>
+
+      <!-- 英文选项 -->
+      <div
+        class="flex-1 flex items-center justify-center cursor-pointer z-10"
+        @click="activeLang = 'en'"
+      >
+        <span :class="activeLang === 'en' ? 'text-white' : 'text-gray-500'">
+          EN
+        </span>
+      </div>
+
+      <!-- 日文选项 -->
+      <div
+        class="flex-1 flex items-center justify-center cursor-pointer z-10"
+        @click="activeLang = 'ja'"
+      >
+        <span :class="activeLang === 'ja' ? 'text-white' : 'text-gray-500'">
+          日本語
+        </span>
+      </div>
+    </div>
+  </div>
 
 </template>
 

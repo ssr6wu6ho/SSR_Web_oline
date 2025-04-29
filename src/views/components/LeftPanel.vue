@@ -107,7 +107,7 @@ const mainRoutes = [ // 主要路由
 ]
 const secondaryRoutes = [
     { index: 1, name: 'messagePage', icon: MessageSquareDiff, path: '/messagePage' },
-    { index: 2, name: 'blogPage', icon: Cpu, path: '/blogPage' }
+    { index: 2, name: 'Info', icon: Cpu, path: '/Info' }
 ]
 
 function smoothRouteToPage(_id: number) {

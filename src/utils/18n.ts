@@ -5,13 +5,13 @@ export const i18n = createI18n({
     locale: "en", // 默认语言为英文
     messages: {
         en: {
-            hello: "Hello World", // 英文
+            projects: "PROJECTS", // 英文
         },
         zh: {
-            hello: "你好", // 中文
+            projects: "项目", // 中文
         },
         ja: {
-            hello: "こんにちは", // 日文
+            projects: "こんにちは", // 日文
         },
     },
 });

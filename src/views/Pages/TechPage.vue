@@ -2,7 +2,7 @@
   <div class="relative min-h-screen w-full overflow-hidden p-8">
     <h2 class="text-2xl font-bold mb-8 flex items-center gap-2 p-10">
       <component :is="CodeIcon" class="w-6 h-6" />
-      PROJECTS
+      {{$t('projects')}}
     </h2>
     <main class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 justify-content
       border rounded-2xls border-gray-400/20 border-2 p-8 rounded-3xl">
@@ -79,6 +79,7 @@ import { CodeIcon } from 'lucide-vue-next';
 import { userBlogPage } from '../../store/stateStore.ts';
 import { userDarkMOdel } from '../../store/stateStore.ts'
 import { useRouter } from 'vue-router'
+import { i18n } from '../../utils/18n'
 import svg_android from '../../icons/android.svg';
 import svg_arduino from '../../icons/arduino.svg';
 import svg_html from '../../icons/html.svg';
@@ -94,7 +95,7 @@ import svg_python from '../../icons/python.svg'
 const darkModeStore = userDarkMOdel();
 const blogPageStore = userBlogPage();
 const router = useRouter();
-
+const $t = i18n.global.t;
 const pageToBlog = (blogId: number) => {
   blogPageStore.setBlogPage(blogId);
   router.push("/blogPage");

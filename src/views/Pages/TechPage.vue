@@ -2,7 +2,7 @@
   <div class="relative min-h-screen w-full overflow-hidden p-8">
     <h2 class="text-2xl font-bold mb-8 flex items-center gap-2 p-10">
       <component :is="CodeIcon" class="w-6 h-6" />
-      {{$t('projects')}}
+      {{ t('techPage.projects') }}
     </h2>
     <main class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-8 justify-content
       border rounded-2xls border-gray-400/20 border-2 p-8 rounded-3xl">
@@ -39,7 +39,7 @@
 
       <section class="mb-16">
         <div class="gap-8 justify-content ">
-          <h3 class="text-xl font-bold mb-2 flex items-center">TECH-STACK</h3>
+          <h3 class="text-xl font-bold mb-2 flex items-center">{{t('techPage.techStack')}}</h3>
           <div class="p-6 rounded-lg">
             <div v-for="skill in TECH_STACK" key="skills" class="mb-8">
               <h3 :class="skill.title" class="text-gray-400 mb-4">{{ skill.title }}</h3>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {computed} from 'vue';
 import { CodeIcon } from 'lucide-vue-next';
 import { userBlogPage } from '../../store/stateStore.ts';
 import { userDarkMOdel } from '../../store/stateStore.ts'
@@ -95,34 +95,34 @@ import svg_python from '../../icons/python.svg'
 const darkModeStore = userDarkMOdel();
 const blogPageStore = userBlogPage();
 const router = useRouter();
-const $t = i18n.global.t;
+const t = i18n.global.t;
 const pageToBlog = (blogId: number) => {
   blogPageStore.setBlogPage(blogId);
   router.push("/blogPage");
 }
 
-const projects = ref([
+const projects = computed(() => [
   {
     id: 1,
-    title: 'Personal Web',
-    description: 'Brain-computer interface visualization system',
+    title: t('techPage.personWeb'),
+    description: t('techPage.personWebIntro'),
     image: '/src/components/png_praises/Web_.png',
     tech: ['Vue.js', 'Typescript'],
     icon: [svg_vue, svg_tailwind, svg_typescript, svg_supabase]
   },
   {
     id: 2,
-    title: 'AI_IOT_APP System',
-    description: 'Next-generation operating system interface',
+    title: t('techPage.APPXIOT'),
+    description: t('techPage.APPXIOTIntro'),
     image: '/src/components/png_praises/Iot_5.png',
     tech: ['MQTT', 'Esp8266/32', 'Arudino', 'Android', 'java', 'C++'],
     icon: [svg_mqtt, svg_arduino, svg_android, svg_spring, svg_vue]
   },
 ]);
 
-const TECH_STACK = [
+const TECH_STACK =  computed(() =>[
   {
-    title: 'softWear',
+    title: t('techPage.softWear'),
     frontend: [
       {
         skill: 'Vue + Vite + Tailwind',
@@ -153,7 +153,7 @@ const TECH_STACK = [
     ],
   },
   {
-    title: 'hardWear',
+    title: t('techPage.hardWear'),
     hardWear: [
       {
         skill: 'arduino + esp8266/32',
@@ -172,5 +172,5 @@ const TECH_STACK = [
       },
     ]
   }
-]
+])
 </script>

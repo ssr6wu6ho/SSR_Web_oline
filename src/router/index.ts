@@ -11,6 +11,11 @@ export const routes = [
     name: "blogPage",
     component: () => import("../views/Pages/BlogPage.vue"),
   },
+  {
+    path:"/Info",
+    name:"InfoPage",
+    component:()=>import("../views/Pages/InfoPage.vue")
+  }
 ];
 
 const router = createRouter({

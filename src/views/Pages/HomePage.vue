@@ -13,7 +13,7 @@
           </span>
         </h1>
         <p class="max-w-[600px] text-lg text-gray-400">
-          大三本科在读 / 欢迎
+          {{ t('homePage.intro') }}
         </p>
       </div>
       <!-- 技能标签 -->
@@ -33,10 +33,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed ,onMounted, onUnmounted } from 'vue'
 import { userDarkMOdel } from '../../store/stateStore'
-
+import { i18n } from '../../utils/18n';
 const darkModeStore = userDarkMOdel();
+const t = i18n.global.t;
+
 
 let currentIndex = 0
 const displayText = ref('')
@@ -45,13 +47,11 @@ let currentTextIndex = 0
 let typingDirection = 'forward'
 let timeoutId = null
 
-// 技能列表
-const skills = [
-  'Web Development',
-  'UI/UX Design',
-  'Full Stack',
-  'Creative Coding',
-]
+const skills = computed(() => [
+t('homePage.webDevel'),
+t('homePage.uiuxDes'),
+t('homePage.fullStark') // 注意键名需要与语言包一致
+])
 
 const typeText = () => {
   const currentText = topText[currentTextIndex]

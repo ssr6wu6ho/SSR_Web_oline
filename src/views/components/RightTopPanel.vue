@@ -1,6 +1,6 @@
 <template>
-  <section v-if="darkModeStore.isDark" class="p-4 z-50">
-    <div class="flex gap-4">
+  <div class="flex p-3 gap-2">
+    <section class="flex gap-3 border border-black/5 rounded-full p-1">
       <a v-for="tech in IconAndUrl" :key="tech.name" :href="tech.url" class="hover:text-white" :title="tech.name">
         <component :is="tech.icon" class="w-6 h-6" />
       </a>
@@ -8,37 +8,24 @@
         <MoonIcon v-if="darkModeStore.isDark" class="w-6 h-6 hover:text-white" />
         <SunIcon v-else class="w-6 h-6 hover:text-white" />
       </button>
-    </div>
-  </section>
-  <section v-else class="p-4">
-    <div class="flex gap-4">
-      <a v-for="tech in IconAndUrl" :key="tech.name" :href="tech.url" class="hover:text-white" :title="tech.name">
-        <component :is="tech.icon" class="w-6 h-6" />
-      </a>
-      <button @click="toggleTheme">
-        <MoonIcon v-if="darkModeStore.isDark" class="w-6 h-6 hover:text-white" />
-        <SunIcon v-else class="w-6 h-6 hover:text-white" />
-      </button>
-    </div>
-  </section>
-  <div class="relative p-4 rounded-full w-30">
-    <div class="relative flex justify-between h-10">
-      <div class="flex-1 flex items-center justify-center cursor-pointer z-10" @click="switchLanguage('zh')">
-        <span :class="activeLang === 'zh' ? 'text-white' : 'text-gray-500'">
+    </section>
+    <section class="flex gap-3 border border-gray-400/20 border-2 rounded-full p-1">
+      <div class="rounded-full items-center justify-center cursor-pointer z-10" @click="switchLanguage('zh')">
+        <span class="text-xs" :class="activeLang === 'zh' ? 'text-white' : 'text-gray-500'">
           中文
         </span>
       </div>
-      <div class="flex-1 flex items-center justify-center cursor-pointer z-10" @click="switchLanguage('en')">
-        <span :class="activeLang === 'en' ? 'text-white' : 'text-gray-500'">
+      <div class="items-center justify-center cursor-pointer z-10" @click="switchLanguage('en')">
+        <span class="text-xs" :class="activeLang === 'en' ? 'text-white' : 'text-gray-500'">
           EN
         </span>
       </div>
-      <div class="flex-1 flex items-center justify-center cursor-pointer z-10" @click="switchLanguage('ja')">
-        <span :class="activeLang === 'ja' ? 'text-white' : 'text-gray-500'">
+      <div class="items-center justify-center cursor-pointer z-10" @click="switchLanguage('ja')">
+        <span class="text-xs" :class="activeLang === 'ja' ? 'text-white' : 'text-gray-500'">
           日本語
         </span>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -51,7 +38,7 @@ import {
   GithubIcon, Tv
 } from 'lucide-vue-next'
 
-const activeLang = ref('zh')
+const activeLang = ref('en')
 
 
 const darkModeStore = userDarkMOdel()

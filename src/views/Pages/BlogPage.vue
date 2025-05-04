@@ -20,6 +20,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue'
 import { userBlogPage } from '../../store/stateStore.ts';
@@ -29,6 +30,9 @@ import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/themes/prism-tomorrow.css'
+
+const WebMd = import.meta.glob('../../components/Web.md',{as:'raw',eager:true})
+
 
 const blogPageStore = userBlogPage();
 
@@ -61,23 +65,7 @@ const post = ref({
   title: 'coding.....👻',
   date: '2024-02-19',
   author: 'RSRR',
-  content: `
-  # ..
-  
-  
-  ## So long cowboy you're so cool
-  
-  cash in hand with memory of you
-  
-  \`\`\`javascript
-  import { 🍍 } from '🛸'
-  
-  export default {
-    setup() {
-      return { ♥️ }
-    }
-  }
-    `,
+  content: WebMd['../../components/Web.md'],
 })
 
 
@@ -87,7 +75,6 @@ const post_2 = ref({
   author: 'sss',
   content: `
   # ..
-  
   
   ## So lonsc
   
@@ -106,22 +93,7 @@ const post_2 = ref({
 const newComment = ref('')
 // 渲染的 Markdown 内容
 const renderedContent = ref('')
-// 提交评论
-const submitComment = () => {
-  if (!newComment.value.trim()) {
-    alert('请输入评论内容')
-    return
-  }
 
-  comments.value.unshift({
-    id: Date.now(),
-    author: '访客',
-    content: newComment.value,
-    date: new Date().toLocaleString(),
-  })
-
-  newComment.value = ''
-}
 
 // 渲染 Markdown
 onMounted(() => {

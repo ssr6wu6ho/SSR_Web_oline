@@ -88,6 +88,18 @@ module.exports = {
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
     },
+    fontFamily: {
+      sans: [
+        'Inter', // 推荐使用现代字体
+        'system-ui',
+        '-apple-system',
+        'Segoe UI',
+        'Roboto',
+        'Noto Sans SC', // 简体中文
+        'sans-serif'
+      ]
+    }
+  
   },
   plugins: [animate],
 }

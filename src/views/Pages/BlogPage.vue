@@ -31,8 +31,8 @@ import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/themes/prism-tomorrow.css'
 
-const WebMd = import.meta.glob('../../components/Web.md',{as:'raw',eager:true})
-
+const WebMd = import.meta.glob('../../components/Web.md', { as: 'raw', eager: true })
+const IOTMd = import.meta.glob('../../components/IOT.md', { as: 'raw', eager: true })
 
 const blogPageStore = userBlogPage();
 
@@ -62,7 +62,7 @@ const md = new MarkdownIt({
 
 // 文章数据
 const post = ref({
-  title: 'coding.....👻',
+  title: '个人网站简介',
   date: '2024-02-19',
   author: 'RSRR',
   content: WebMd['../../components/Web.md'],
@@ -73,20 +73,7 @@ const post_2 = ref({
   title: '👻',
   date: '2024-02-19',
   author: 'sss',
-  content: `
-  # ..
-  
-  ## So lonsc
-  
-  \`\`\`javascript
-  import { 🍍 } from '🛸'
-  
-  export default {
-    setup() {
-      return { ♥️ }
-    }
-  }
-    `,
+  content: IOTMd['../../components/IOT.md'],
 })
 
 
@@ -97,45 +84,172 @@ const renderedContent = ref('')
 
 // 渲染 Markdown
 onMounted(() => {
-  if (blogPageStore.blogPage===1) { renderedContent.value = md.render(post.value.content) }
-  else if (blogPageStore.blogPage===2) { renderedContent.value = md.render(post_2.value.content) }
+
+  if (blogPageStore.blogPage === 1) { renderedContent.value = md.render(post.value.content) }
+  else if (blogPageStore.blogPage === 2) { renderedContent.value = md.render(post_2.value.content) }
 })
 </script>
 
-<style scoped>
-/* Markdown 样式 */
+<style>
 .markdown-body {
   color: #e4e4e7;
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
+/* 标题 */
+.markdown-body h1 {
+  font-size: 2em;
+  border-bottom: 5px solid #3f3f46;
+  padding-bottom: 0.3em;
+}
+
+.markdown-body h2 {
+  font-size: 1.75em;
+  border-bottom: 3px solid #3f3f46;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
 .markdown-body h6 {
-  color: white;
-  margin-top: 1.5em;
-  margin-bottom: 1em;
+  font-size: 0.875em;
+  color: #a1a1aa;
 }
 
-.markdown-body a {
-  color: #a855f7;
+/* 段落和列表 */
+.markdown-body p {
+  margin: 0 0 1em;
+  line-height: 1.7;
 }
 
-.markdown-body pre {
-  background-color: #1e1e2e !important;
-  border-radius: 0.5rem;
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0 0 1em 1.5em;
+  padding-left: 1em;
 }
 
-.markdown-body code {
-  color: #e4e4e7;
-  background-color: #1e1e2e;
-  padding: 0.2em 0.4em;
+.markdown-body li {
+  margin: 0.5em 0;
+}
+
+/* 引用 */
+.markdown-body blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  background-color: #2d2d42;
+  border-left: 4px solid #a855f7;
+  color: #a1a1aa;
   border-radius: 0.3em;
 }
 
+/* 表格 */
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  background-color: #2d2d42;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 0.75em;
+  border: 1px solid #3f3f46;
+}
+
+.markdown-body th {
+  background-color: #363646;
+  color: white;
+  font-weight: 600;
+}
+
+/* 图片 */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5em;
+  margin: 1em 0;
+}
+
+/* 分隔线 */
+.markdown-body hr {
+  border: none;
+  border-top: 2px solid #3f3f46;
+  margin: 2em 0;
+}
+
+/* 代码块增强 */
+.markdown-body pre {
+  position: relative;
+  padding: 1.5em;
+  overflow-x: auto;
+}
+
 .markdown-body pre code {
-  padding: 0;
+  display: block;
+  font-family: "Fira Code", "Consolas", monospace;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* 行内代码 */
+.markdown-body code:not(pre code) {
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9em;
+}
+
+/* 强调文本 */
+.markdown-body strong {
+  color: white;
+  font-weight: 600;
+}
+
+.markdown-body em {
+  color: #a1a1aa;
+  font-style: italic;
+}
+
+/* 链接交互效果 */
+.markdown-body a:hover {
+  color: #c084fc;
+  text-decoration: underline;
+}
+
+/* 列表符号颜色 */
+.markdown-body ul {
+  list-style-type: "•";
+  color: #a855f7;
+}
+
+.markdown-body ul ul {
+  list-style-type: "◦";
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+/* 滚动条样式（仅支持 WebKit） */
+.markdown-body pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.markdown-body pre::-webkit-scrollbar-thumb {
+  background-color: #4a4a6e;
+  border-radius: 3px;
+}
+
+.markdown-body pre::-webkit-scrollbar-track {
+  background-color: #2d2d42;
 }
 </style>
